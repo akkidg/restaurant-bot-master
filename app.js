@@ -1130,8 +1130,9 @@ function showSubMenu(recipientId,menuText){
   }
 
   console.log("submenu length: " + subMenuArray.length);
+  console.log("elements json: " + getElementsJson(subMenuArray));
 
-  var messageData = {
+  /*var messageData = {
     recipient: {
       id: recipientId
     },
@@ -1141,39 +1142,47 @@ function showSubMenu(recipientId,menuText){
         payload:{
           template_type:"generic",
           elements:[
-          for (i in subMenuArray) {
-             {
-              title:subMenuArray[i].title,
-              image_url:subMenuArray[i].image_url,
-              subtitle:subMenuArray[i].subtitle,
-              default_action: {
-                type: "web_url",
-                url: subMenuArray[i].default_action_url,
-                messenger_extensions: true,
-                webview_height_ratio: "tall",
-                fallback_url: ""
-              },
-              buttons:[
-              {
-              type: "postback",
-              payload: subMenuArray[i].payload_checkout,
-              title: "Checkout"
-              },{
-              type: "postback",
-              payload: subMenuArray[i].payload_back,
-              title: "Back"
-              }          
-            ]      
-            },
-          }         
+            getElementsJson(subMenuArray);         
           ]
         }    
       }
     }
   };
   
-  callSendAPI(messageData);
+  callSendAPI(messageData);*/
 }
+
+function getElementsJson(subMenuArray){
+  var elementsArray = "";
+  for (i in subMenuArray) {
+    var singleElement = {
+        title:subMenuArray[i].title,
+        image_url:subMenuArray[i].image_url,
+        subtitle:subMenuArray[i].subtitle,
+        default_action: {
+          type: "web_url",
+          url: subMenuArray[i].default_action_url,
+          messenger_extensions: true,
+          webview_height_ratio: "tall",
+          fallback_url: ""
+        },
+        buttons:[
+        {
+        type: "postback",
+        payload: subMenuArray[i].payload_checkout,
+        title: "Checkout"
+        },{
+        type: "postback",
+        payload: subMenuArray[i].payload_back,
+        title: "Back"
+        }          
+      ]      
+    };
+    elementsArray = elementsArray + singleElement + ","; 
+  }
+  return JSON.stringify(elementsArray);  
+}
+
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
