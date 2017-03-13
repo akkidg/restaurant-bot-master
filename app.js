@@ -1154,6 +1154,7 @@ function showSubMenu(recipientId,menuText){
 
 function getElementsJson(subMenuArray){
   var elementsArray = "";
+  var i;
   for (i in subMenuArray) {
     var singleElement = {
         title:subMenuArray[i].title,
