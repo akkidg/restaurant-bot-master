@@ -1130,9 +1130,8 @@ function showSubMenu(recipientId,menuText){
   }
 
   console.log("submenu length: " + subMenuArray.length);
-  console.log("elements json: " + getElementsJson(subMenuArray));
 
-  /*var messageData = {
+  var messageData = {
     recipient: {
       id: recipientId
     },
@@ -1141,15 +1140,14 @@ function showSubMenu(recipientId,menuText){
         type:"template",
         payload:{
           template_type:"generic",
-          elements:[
-            getElementsJson(subMenuArray);         
-          ]
+          elements:getElementsJson(subMenuArray)
         }    
       }
     }
   };
   
-  callSendAPI(messageData);*/
+  console.log("elements json: " + messageData);
+  //callSendAPI(messageData);
 }
 
 function getElementsJson(subMenuArray){
