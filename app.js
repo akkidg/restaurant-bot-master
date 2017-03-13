@@ -1181,8 +1181,8 @@ function getElementsJson(subMenuArray){
     };
     elements.push(singleElement); 
   }
-  return elements;
-  //return JSON.stringify(elementsArray);  
+  //return elements;
+  return JSON.stringify(elementsArray);  
 }
 
 
