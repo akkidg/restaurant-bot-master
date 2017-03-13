@@ -1181,7 +1181,8 @@ function getElementsJson(subMenuArray){
     };
     elementsArray = elementsArray + singleElement + ","; 
   }
-  return JSON.stringify(elementsArray);  
+  return elementsArray;
+  //return JSON.stringify(elementsArray);  
 }
 
 
