@@ -614,14 +614,14 @@ function sendWelcomeMessage(recipientId) {
           elements:[
              {
               title:"Welcome to Chili's Bar & Cafe",
-              image_url:"https://www.famousgreeksalads.com/_upload/slideshow/13401481191902759378.jpg",
+              image_url:"https://b.zmtcdn.com/data/pictures/4/97824/ebbcf1c5632b53257159facd17b1557a.jpg",
               subtitle:"Try Delicious Food",
               default_action: {
                 type: "web_url",
-                url: "https://www.famousgreeksalads.com",
+                url: "https://www.zomato.com/hyderabad/chilis-banjara-hills",
                 messenger_extensions: true,
                 webview_height_ratio: "tall",
-                fallback_url: "https://www.famousgreeksalads.com"
+                fallback_url: "https://www.zomato.com/hyderabad/chilis-banjara-hills"
               },
               buttons:[
                 {
