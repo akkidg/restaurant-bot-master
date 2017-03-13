@@ -1146,7 +1146,7 @@ function showSubMenu(recipientId,menuText){
     }
   };
   
-  console.log("elements json: " + messageData);
+  console.log("elements json: " + JSON.stringify(messageData));
   //callSendAPI(messageData);
 }
 
