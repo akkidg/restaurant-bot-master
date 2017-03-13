@@ -282,9 +282,12 @@ function receivedMessage(event) {
 
     receivedQuickReplyPostback(event);
     return;
-  }else if(isContactAsked){
+  }
+
+  if(isContactAsked){
     userContact = messageText;
     isContactAsked = false;
+    showTableSelectionQuickReplies(senderID);
     return;
   }
 
@@ -354,6 +357,14 @@ function receivedMessage(event) {
 
       case 'hungry':
         
+      break;
+
+      case 'book table':
+
+      break;
+
+      case 'book a table':
+
       break;
  
       default:
