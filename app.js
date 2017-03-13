@@ -1146,8 +1146,8 @@ function showSubMenu(recipientId,menuText){
     }
   };
   
-  console.log("elements json: " + JSON.stringify(messageData));
-  //callSendAPI(messageData);
+  //console.log("elements json: " + JSON.stringify(messageData));
+  callSendAPI(messageData);
 }
 
 function getElementsJson(subMenuArray){
