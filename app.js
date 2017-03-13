@@ -1182,7 +1182,7 @@ function getElementsJson(subMenuArray){
     elements.push(singleElement); 
   }
   //return elements;
-  return JSON.stringify(elementsArray);  
+  return JSON.stringify(elements);  
 }
 
 
