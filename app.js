@@ -28,12 +28,35 @@ app.use(express.static('public'));
 var delayMills = 1000;
 var reviewCounter = 0;
 
+var isContactAsked = false;
+var userContact = 0;
+
+var bookingNumber;
+
 var reviews = [
   "Christina R.\nThis place gets busy! And it seems like there are some repeat customers because the waitress (the only waitress working) knew people's names. The waitress was FAST, efficient, patient, she was great for handling all of those tables. She was so chipper and happy too. The food was spot on, there is a reason why 'famous' is in the name of their restaurant. You can sit inside or outside where there are tables out front. I've seen people bring their dogs with them to sit outside too. The entire staff is nice, even the nice guy that brings the food out. They do take out, and deliver ($50 min I believe).",
   "Kyle P.\nI used to eat here two times a week and man do I miss it. We have since moved and I have not found a Greek restaurant that compares. Mike and Mike Jr. both have great personal service.  You can tell that they take pride in their food and care about your personal experience with them.  Highly recommend this place!",
   "Bill K.\nThe Moussaka is just amazing!! Coupled with the Greek Salad that accompanies it- you have a meal you just can't beat!  Really like this quaint little place and all its amazing menu items!",
   "Tori B.\nNo Complaints from this girl.  We order from here at least twice a month the food is always fresh and hot.  The online ordering system is easy to navigate and customizable for  people like me who can never order an item as it comes. I always have to change something and the online system lets me do that.\nThe 1/4 chicken is always crispy and juicy at the same time , the mini Greek salad is more than enough to fill me up.  Spanikopita oh how I love thee crispy and full of flavor. The potato salad is always flavorful and never bland perfect blend of spices."  
 ];
+
+var subMenu = {
+  "food":[
+  {"title":"Burgers","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/26c7e0533eb80938d85d8ce6c5403b7d.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_FOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
+  {"title":"Salads","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_FOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
+  {"title":"Sea Food","image_url":"https://b.zmtcdn.com/data/reviews_photos/18c/7ec87b08ce81077c5b2a626efe39a18c_1475417145.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_FOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  ],
+  "drinks":[
+  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DRINKS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"},
+  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DRINKS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"},
+  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DRINKS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"}
+  ],
+  "deserts":[
+  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DESERTS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"},
+  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DESERTS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"},
+  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"","default_action_url":"","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_DESERTS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"}
+  ] 
+}
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -259,7 +282,12 @@ function receivedMessage(event) {
 
     receivedQuickReplyPostback(event);
     return;
+  }else if(isContactAsked){
+    userContact = messageText;
+    isContactAsked = false;
+    return;
   }
+
 
   if (messageText) {
     messageText = messageText.toLowerCase();
@@ -333,7 +361,7 @@ function receivedMessage(event) {
         sendWelcomeMessage(senderID);
 
         setTimeout(function(){    
-            greetText(senderID);
+            showTextTemplate(senderID,"Hi, We'r happy to see u back..");
           },delayMills);     
     }
   } else if (messageAttachments) {
@@ -370,7 +398,6 @@ function receivedDeliveryConfirmation(event) {
   console.log("All message before %d were delivered.", watermark);
 }
 
-
 /*
  * Quick Reply Postback Event
  *
@@ -393,26 +420,29 @@ function receivedQuickReplyPostback(event) {
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
+  var confirmationText = "Hi, someOne. Your booking completed. Thank you.";
+
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
     switch (payload) {
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL':
-          sendTypingOn(senderID);
-          sendAllSpecial(senderID);
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
+          bookingNumber = "Two";
+          showTextTemplate(senderID,confirmationText);
         break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL':
-          sendTypingOn(senderID);
-          sendDailySpecial(senderID);
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE':
+          bookingNumber = "For Two to Five";
+          showTextTemplate(senderID,confirmationText);
         break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL':
-          sendTypingOn(senderID);
-          sendPartySpecial(senderID);
-          break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE':
+          bookingNumber = "For More Than Five";  
+          showTextTemplate(senderID,confirmationText);
+        break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
           sendTypingOn(senderID);
           showReviews(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TESTIMONALS':
+          sendTypingOn(senderID);
           showTestimonials(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_START_OVER':
@@ -463,6 +493,13 @@ function receivedPostback(event) {
             sendQuickReplySpecial(senderID);
           },delayMills);
         break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE':
+          sendTypingOn(senderID);
+          if(userContact)
+            showTableSelectionQuickReplies(senderID);
+          else
+            showAskContactTemplate(senderID);
+        break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS':
           sendTypingOn(senderID);
           sendOpeningHoursText(senderID);
@@ -500,6 +537,18 @@ function receivedPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
             sendQuickReplySpecial(senderID);
         break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD':
+          sendTypingOn(senderID);
+          showSubMenu(senderID,"food");
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS':
+          sendTypingOn(senderID);
+          showSubMenu(senderID,"drinks");  
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS':
+          sendTypingOn(senderID);
+          showSubMenu(senderID,"deserts");
+        break;
         default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
@@ -507,8 +556,7 @@ function receivedPostback(event) {
    }else{
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
-   } 
-
+   }
 }
 
 /*
@@ -565,7 +613,7 @@ function sendWelcomeMessage(recipientId) {
           template_type:"generic",
           elements:[
              {
-              title:"Welcome to Famous Greek ",
+              title:"Welcome to Chili's Bar & Cafe",
               image_url:"https://www.famousgreeksalads.com/_upload/slideshow/13401481191902759378.jpg",
               subtitle:"Try Delicious Food",
               default_action: {
@@ -588,21 +636,9 @@ function sendWelcomeMessage(recipientId) {
                 },
                 {
                     type:"postback",
-                    title:"Opening Hours",
-                    payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS"
-                }
-                /*,
-                {
-                  type:"postback",
-                  title:"Place An Order",
-                  payload:"DEVELOPER_DEFINED_PAYLOAD_PLACE_ORDER"
-                }                                
-                ,
-                {
-                  type:"postback",
-                  title:"Call",
-                  payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_CALL"
-                }  */            
+                    title:"Book a Table",
+                    payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE"
+                }          
               ]      
             }
           ]
@@ -627,12 +663,12 @@ function sendMainMenu(recipientId){
         payload: {
           template_type: "generic",
           elements: [{
-            title: "Family Meals",
+            title: "Food",
             item_url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/WYblFLmYup8mR7ToE5AJiw/o.jpg",
+            image_url: "https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg",
             buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",
+              type: "postback",
+              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD",
               title: "Checkout"
             },{
               type:"phone_number",
@@ -644,63 +680,12 @@ function sendMainMenu(recipientId){
               title: "Back"
             }],
           }, {
-            title: "Soups & Starters",
+            title: "Drinks",
             item_url: "https://www.famousgreeksalads.com/order-food-online/Soups-and-Starters/c=1518/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/vf6L_630p5gZvbxZFMDq0w/o.jpg",
+            image_url: "https://b.zmtcdn.com/data/pictures/4/97824/e74c3c1e40eff1d32dc4842ff5a8217d_top_thumb_620_314.jpg",
             buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Soups-and-Starters/c=1518/clear/",
-              title: "Checkout"
-            },{
-              type:"phone_number",
-              title:"Call",
-              payload:"+17277974998"
-            },{
               type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Famous Favorites",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/lYkV85S_UgUdfcGN1e9whw/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",
-              title: "Checkout"
-            },{
-              type:"phone_number",
-              title:"Call",
-              payload:"+17277974998"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Party Salads",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Party-Salads/c=1587/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/2Yf356OTZrAt9nLK5vwCHg/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Party-Salads/c=1587/clear/",
-              title: "Checkout"
-            },{
-              type:"phone_number",
-              title:"Call",
-              payload:"+17277974998"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Party Platters",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",               
-            image_url: "https://s3-media4.fl.yelpcdn.com/bphoto/6hDV4khet707gxzAi61JGg/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",
+              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS",
               title: "Checkout"
             },{
               type:"phone_number",
@@ -713,18 +698,17 @@ function sendMainMenu(recipientId){
             }]
           },{
             title: "Deserts",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Desserts/c=1524/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/lpSphqp_DFKIXJmHkIG7NQ/o.jpg",
+            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
+            image_url: "https://b.zmtcdn.com/data/reviews_photos/fd4/cfe452dea8c8804678b88dbf55070fd4_1470577220.jpg",
             buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Desserts/c=1524/clear/",
+              type: "postback",
+              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS",
               title: "Checkout"
             },{
               type:"phone_number",
               title:"Call",
               payload:"+17277974998"
-            },
-            {
+            },{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
               title: "Back"
@@ -1050,44 +1034,56 @@ function showReviews(recipientId){
   reviewCounter = 0;
 }
 
-function greetText(recipientId){
+function showTextTemplate(recipientId,msgText){
   var messageData = {
     recipient: {
       id: recipientId
     },message:{
-      text:"Hi, We'r happy to see u.."
+      text:msgText
     }
   };
 
   callSendAPI(messageData);
 }
 
-function showGallery(recipientId){
+function showAskContactTemplate(recipientId){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },message:{
+      text:"Hello, SomeName. Please give us your contact number?"
+    }
+  };
+
+  callSendAPI(messageData);
+  isContactAsked = true;
+}
+
+function showTableSelectionQuickReplies(senderID){
   var messageData = {
     recipient: {
       id: recipientId
     },
-    message: {        
-      attachment:{
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "",
-            subtitle:"",
-            image_url: "https://www.famousgreeksalads.com/_upload/slideshow/13401483603012685235.jpg",
-          }, {
-            title: "",
-            subtitle:"",
-            image_url: "https://www.famousgreeksalads.com/_upload/slideshow/13401465644405939908.jpg",
-          },{
-            title: "",
-            subtitle:"",
-            image_url: "https://www.famousgreeksalads.com/_upload/slideshow/13401465644405939908.jpg",
-          }]
+    message: {
+      text: "How many people's are with you?",
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":"2",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_TWO"      
+        },
+        {
+          "content_type":"text",
+          "title":"3 - 5",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE"
+        },
+        {
+          "content_type":"text",
+          "title":"More than 5",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE"
         }
-      }
-    }    
+      ]
+    }
   };
 
   callSendAPI(messageData);
@@ -1110,6 +1106,53 @@ function sendTypingOn(recipientId) {
   callSendAPI(messageData);
 }
 
+function showSubMenu(recipientId,menuText){
+
+  console.log("submenu length: " + subMenu.menuText.length);
+
+  /*var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {        
+      attachment:{
+        type:"template",
+        payload:{
+          template_type:"generic",
+          elements:[
+          for (i in subMenu.menuText) {
+             {
+              title:subMenu.menuText[i].title,
+              image_url:subMenu.menuText[i].image_url,
+              subtitle:subMenu.menuText[i].subtitle,
+              default_action: {
+                type: "web_url",
+                url: subMenu.menuText[i].default_action_url,
+                messenger_extensions: true,
+                webview_height_ratio: "tall",
+                fallback_url: ""
+              },
+              buttons:[
+              {
+              type: "postback",
+              payload: subMenu.menuText[i].payload_checkout,
+              title: "Checkout"
+              },{
+              type: "postback",
+              payload: subMenu.menuText[i].payload_back,
+              title: "Back"
+              }          
+            ]      
+            },
+          }         
+          ]
+        }    
+      }
+    }
+  };
+  
+  callSendAPI(messageData);*/
+}
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
@@ -1149,25 +1192,5 @@ app.listen(app.get('port'), function() {
 });
 
 module.exports = app;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
