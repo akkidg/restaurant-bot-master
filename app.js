@@ -1131,7 +1131,7 @@ function showSubMenu(recipientId,menuText){
 
   console.log("submenu length: " + subMenuArray.length);
 
-  /*var messageData = {
+  var messageData = {
     recipient: {
       id: recipientId
     },
@@ -1141,14 +1141,14 @@ function showSubMenu(recipientId,menuText){
         payload:{
           template_type:"generic",
           elements:[
-          for (i in subMenu.menuText) {
+          for (i in subMenuArray) {
              {
-              title:subMenu.menuText[i].title,
-              image_url:subMenu.menuText[i].image_url,
-              subtitle:subMenu.menuText[i].subtitle,
+              title:subMenuArray[i].title,
+              image_url:subMenuArray[i].image_url,
+              subtitle:subMenuArray[i].subtitle,
               default_action: {
                 type: "web_url",
-                url: subMenu.menuText[i].default_action_url,
+                url: subMenuArray[i].default_action_url,
                 messenger_extensions: true,
                 webview_height_ratio: "tall",
                 fallback_url: ""
@@ -1156,11 +1156,11 @@ function showSubMenu(recipientId,menuText){
               buttons:[
               {
               type: "postback",
-              payload: subMenu.menuText[i].payload_checkout,
+              payload: subMenuArray[i].payload_checkout,
               title: "Checkout"
               },{
               type: "postback",
-              payload: subMenu.menuText[i].payload_back,
+              payload: subMenuArray[i].payload_back,
               title: "Back"
               }          
             ]      
@@ -1172,7 +1172,7 @@ function showSubMenu(recipientId,menuText){
     }
   };
   
-  callSendAPI(messageData);*/
+  callSendAPI(messageData);
 }
 
 /*
