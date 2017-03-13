@@ -1163,7 +1163,7 @@ function getElementsJson(subMenuArray){
           url: subMenuArray[i].default_action_url,
           messenger_extensions: true,
           webview_height_ratio: "tall",
-          fallback_url: ""
+          fallback_url: "https://www.zomato.com/hyderabad/chilis-banjara-hills"
         },
         buttons:[
         {
