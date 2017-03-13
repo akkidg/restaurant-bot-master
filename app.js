@@ -1119,7 +1119,17 @@ function sendTypingOn(recipientId) {
 
 function showSubMenu(recipientId,menuText){
 
-  console.log("submenu length: " + subMenu.menuText.length);
+  var subMenuArray;
+
+  if(menuText === "food"){
+    subMenuArray = subMenu.food;
+  }else if(menuText === "drinks"){
+    subMenuArray = subMenu.drinks;
+  }else{
+    subMenuArray = subMenu.deserts;
+  }
+
+  console.log("submenu length: " + subMenuArray.length);
 
   /*var messageData = {
     recipient: {
