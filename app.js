@@ -1153,7 +1153,7 @@ function showSubMenu(recipientId,menuText){
 }
 
 function getElementsJson(subMenuArray){
-  var elementsArray = {};
+  var elements = [];
   var i;
   for (i in subMenuArray) {
     var singleElement = {
@@ -1179,9 +1179,9 @@ function getElementsJson(subMenuArray){
         }          
       ]      
     };
-    elementsArray.push(singleElement); 
+    elements.push(singleElement); 
   }
-  return elementsArray;
+  return elements;
   //return JSON.stringify(elementsArray);  
 }
 
