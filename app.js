@@ -1070,7 +1070,7 @@ function showAskContactTemplate(recipientId){
   isContactAsked = true;
 }
 
-function showTableSelectionQuickReplies(senderID){
+function showTableSelectionQuickReplies(recipientId){
   var messageData = {
     recipient: {
       id: recipientId
