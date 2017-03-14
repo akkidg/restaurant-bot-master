@@ -503,15 +503,15 @@ function receivedQuickReplyPostback(event) {
     switch (payload) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
           bookingNumber = "Two";
-          showTableSelectionQuickReplies(senderID);
+          showTimeSlotSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE':
           bookingNumber = "For Two to Five";
-          showTableSelectionQuickReplies(senderID);
+          showTimeSlotSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE':
           bookingNumber = "For More Than Five";  
-          showTableSelectionQuickReplies(senderID);
+          showTimeSlotSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
           sendTypingOn(senderID);
