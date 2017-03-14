@@ -493,11 +493,6 @@ function receivedQuickReplyPostback(event) {
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
-  if(isOrderInProgress){
-    showOrderContinuationForm(senderID);
-    return;
-  }
-
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
     switch (payload) {
@@ -567,10 +562,13 @@ function receivedQuickReplyPostback(event) {
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
     }
-   }else{
-        sendTypingOn(senderID);
-        sendWelcomeMessage(senderID);
-   }
+  }else if(isOrderInProgress){
+    showOrderContinuationForm(senderID);
+    return;
+  }else{
+    sendTypingOn(senderID);
+    sendWelcomeMessage(senderID);
+  }
 }
 
 /*
