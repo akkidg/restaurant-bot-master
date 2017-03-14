@@ -577,30 +577,9 @@ function receivedPostback(event) {
           console.log("Received postback for get started button");
           sendTypingOn(senderID);
           sendWelcomeMessage(senderID);
-        break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL':
-          sendTypingOn(senderID);
-          sendAllSpecial(senderID);
-        break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL':
-          sendTypingOn(senderID);
-          sendDailySpecial(senderID);
-        break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL':
-          sendTypingOn(senderID);
-          sendPartySpecial(senderID);
-        break
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL_BACK':          
-          sendQuickRepliesActions(senderID);
-        break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL_BACK':
-          sendQuickRepliesActions(senderID);
-        break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK':
-          sendQuickRepliesActions(senderID);
-        break;
+        break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
-            sendQuickReplySpecial(senderID);
+            sendQuickRepliesActions(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD':
           sendTypingOn(senderID);
@@ -851,222 +830,6 @@ function sendOpeningHoursText(recipientId){
   callSendAPI(messageData);
 }
 
-function sendQuickReplySpecial(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: "Checkout our most appreciated dishes by our customer's",
-      quick_replies: [
-        {
-          "content_type":"text",
-          "title":"Special Dishes",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL"
-        },
-        {
-          "content_type":"text",
-          "title":"Daily Special",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL"
-        },
-        {
-          "content_type":"text",
-          "title":"Party Special",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL"
-        }
-      ]
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-function sendAllSpecial(recipientId){
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {        
-      attachment:{
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "1/4 Greek Chicken",
-            subtitle: "Marinated and baked crisp with oregano and lemon served with a side Greek salad and choice of Greek potatoes or rice.",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
-            image_url: "https://s3-media3.fl.yelpcdn.com/bphoto/pRlwiEvBGd1bGvTWEOXKjQ/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL_BACK",
-              title: "Back"
-            }],
-          }, {
-            title: "Famous Greek Combo",
-            subtitle:"Choice of Grilled Chicken or Sliced Gyro over rice with a side Greek salad and choice of any Famous Spread with pita!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/QSE7ewgmNsDgv8-AN2iYVA/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Moussaka",
-            subtitle:"Layers of eggplant, ground beef, and a creamy bechamel with a hint of cinnamon. Served with a side Greek salad!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
-            image_url: "https://s3-media2.fl.yelpcdn.com/bphoto/FTbUZ4g-50I0ZflC2Jspxw/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_ALL_SPECIAL_BACK",
-              title: "Back"
-            }]
-          }]
-        }
-      }
-    }    
-  };
-
-  callSendAPI(messageData);
-}
-
-function sendDailySpecial(recipientId){
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {        
-      attachment:{
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "Family Meal for 4 - Grilled Chicken with Rice!",
-            subtitle:"Choice of sliced gyro or grilled chicken, a family size Greek salad, and tzatziki or hummus with pita!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/L3-CkhGyBG7ZeJvgZU_KwA/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL_BACK",
-              title: "Back"
-            }],
-          }, {
-            title: "Family Meal for 4 - Subs and Pitas",
-            subtitle:"A great selection of our Famous sandwiches with a family size Greek salad!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",               
-            image_url: "https://s3-media4.fl.yelpcdn.com/bphoto/w_SKQJwRBF_iVhnGVYWHBQ/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Family Meal for 6 - Grilled Chicken with Rice!",
-            subtitle:"Choice of grilled chicken or sliced gyro, a family size Greek salad, and choice of tzatziki or hummus with pita!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",               
-            image_url: "https://s3-media3.fl.yelpcdn.com/bphoto/2RFG6peA1gDGqX73zdfoZg/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DAILY_SPECIAL_BACK",
-              title: "Back"
-            }]
-          }]
-        }
-      }
-    }    
-  };
-
-  callSendAPI(messageData);
-}
-
-function sendPartySpecial(recipientId){
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {        
-      attachment:{
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "Chicken Souvlaki Or Gyro Platter",
-            subtitle:"This platter gives your guests a chance to build their own gyro with the pita, lettuce, tomato, onion, and tzatziki sauce all separate.",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",               
-            image_url: "https://s3-media1.fl.yelpcdn.com/bphoto/dvMm1v48QecM-Ry6lorUug/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
-              title: "Back"
-            }],
-          }, {
-            title: "Deli Wrap Tray",
-            subtitle:"Our wraps our prepared on tomato basil and spinach tortillas. Choose up to 3 options!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",               
-            image_url: "https://s3-media3.fl.yelpcdn.com/bphoto/2RFG6peA1gDGqX73zdfoZg/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
-              title: "Back"
-            }]
-          },{
-            title: "Famous Cubans Tray",
-            subtitle:"Always a party favorite!",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",               
-            image_url: "https://s3-media2.fl.yelpcdn.com/bphoto/wlMw-SFnyOwIOWap2x1ckg/o.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.famousgreeksalads.com/order-food-online/Party-Platters/c=2761/clear/",
-              title: "Checkout"
-            },{
-              type: "postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_PARTY_SPECIAL_BACK",
-              title: "Back"
-            }]
-          }]
-        }
-      }
-    }    
-  };
-
-  callSendAPI(messageData);
-}
-
 function sendQuickRepliesActions(recipientId){
   var messageData = {
     recipient: {
@@ -1098,11 +861,12 @@ function sendQuickRepliesActions(recipientId){
 }
 
 function showTestimonials(recipientId){
+  var testimonialsText = testimonials + "\n" + serviceHighlights + "\n" + knowFor;
   var messageData = {
     recipient: {
       id: recipientId
     },message:{
-      text:testimonials + "\n" + serviceHighlights + "\n" + knowFor;
+      text:testimonialsText;
     }
   };
 
