@@ -405,11 +405,13 @@ function receivedMessage(event) {
       break;
 
       case 'book table':
-
+        sendTypingOn(senderID);
+        showAskContactTemplate(senderID);
       break;
 
       case 'book a table':
-
+        sendTypingOn(senderID);
+        showAskContactTemplate(senderID);
       break;
 
       case 'food':
