@@ -553,10 +553,10 @@ function receivedPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_LOCATION':
           sendTypingOn(senderID);
           sendLocationTemplate(senderID);
-
+/*
           setTimeout(function(){    
             sendQuickReplySpecial(senderID);
-          },delayMills);
+          },delayMills);*/
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE':
           sendTypingOn(senderID);
@@ -745,7 +745,7 @@ function sendMainMenu(recipientId){
             },{
               type:"phone_number",
               title:"Call",
-              payload:"+17277974998"
+              payload:"+919951700248"
             },{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
@@ -762,7 +762,7 @@ function sendMainMenu(recipientId){
             },{
               type:"phone_number",
               title:"Call",
-              payload:"+17277974998"
+              payload:"+919951700248"
             },{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
@@ -779,7 +779,7 @@ function sendMainMenu(recipientId){
             },{
               type:"phone_number",
               title:"Call",
-              payload:"+17277974998"
+              payload:"+919951700248"
             },{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
@@ -861,7 +861,7 @@ function sendQuickRepliesActions(recipientId){
 }
 
 function showTestimonials(recipientId){
-  var testimonialsText = testimonials + "\n" + serviceHighlights + "\n" + knowFor;
+  var testimonialsText = testimonials + "\n\n" + serviceHighlights + "\n\n" + knowFor;
   var messageData = {
     recipient: {
       id: recipientId
