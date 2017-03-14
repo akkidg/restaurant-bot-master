@@ -28,9 +28,10 @@ app.use(express.static('public'));
 var delayMills = 1000;
 var reviewCounter = 0;
 
-var isContactAsked = false;
-var userContact = 0;
+var isContactAsked = isOrderInProgress = false;
 
+var timeSlot;
+var userContact = 0;
 var bookingNumber;
 
 var reviews = [
@@ -330,6 +331,10 @@ function receivedMessage(event) {
     return;
   }
 
+  if(isOrderInProgress){
+    showOrderContinuationForm(senderID);
+    return;
+  }
 
   if (messageText) {
     messageText = messageText.toLowerCase();
@@ -485,22 +490,25 @@ function receivedQuickReplyPostback(event) {
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
-  var confirmationText = "Hi, someOne. Your booking completed. Thank you.";
+  if(isOrderInProgress){
+    showOrderContinuationForm(senderID);
+    return;
+  }
 
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
     switch (payload) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
           bookingNumber = "Two";
-          showTextTemplate(senderID,confirmationText);
+          showTableSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE':
           bookingNumber = "For Two to Five";
-          showTextTemplate(senderID,confirmationText);
+          showTableSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE':
           bookingNumber = "For More Than Five";  
-          showTextTemplate(senderID,confirmationText);
+          showTableSelectionQuickReplies(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
           sendTypingOn(senderID);
@@ -513,7 +521,45 @@ function receivedQuickReplyPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_START_OVER':
           sendTypingOn(senderID);
           sendWelcomeMessage(senderID);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MENU':
+          sendTypingOn(senderID);
+          sendMainMenu(senderID);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
+          timeSlot = "12-2";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
         break;        
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
+          timeSlot = "2-4";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
+        break;   
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
+          timeSlot = "4-6";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
+        break;   
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
+          timeSlot = "6-8";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
+        break;   
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
+          timeSlot = "8-10";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
+        break;   
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
+          timeSlot = "10-12";
+          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showMenu(senderID);
+        break;   
+        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
+          timeSlot = null;
+          showTextTemplate(senderID,"Sorry, can't proceed your booking, you have not selected any time slot?");
+        break;   
         default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
@@ -562,6 +608,8 @@ function receivedPostback(event) {
           sendTypingOn(senderID);
           if(userContact)
             showTableSelectionQuickReplies(senderID);
+          else if(bookingNumber)
+            showTimeSlotSelectionQuickReplies(senderID);
           else
             showAskContactTemplate(senderID);
         break;
@@ -642,6 +690,23 @@ function receivedPostback(event) {
           sendTypingOn(senderID);
           var x = Math.floor((Math.random() * 4) + 0);
           showTextTemplate(senderID,reviews[x]);
+          setTimeout(function(){                
+            sendQuickRepliesActions(senderID);
+          },delayMills);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CANCEL':
+          isOrderInProgress = false;
+          bookingNumber = null;
+          timeSlot = null;
+          showMenu(senderID);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
+          if(userContact)
+            showTableSelectionQuickReplies(senderID);
+          else if(bookingNumber)
+            showTimeSlotSelectionQuickReplies(senderID);
+          else
+            showAskContactTemplate(senderID);
         break;
         default:
         sendTypingOn(senderID);
@@ -851,17 +916,12 @@ function sendQuickRepliesActions(recipientId){
       id: recipientId
     },
     message: {
-      text: "Get Connected with us...",
-      quick_replies: [
+      text: "Get Connected...",
+      quick_replies: [        
         {
           "content_type":"text",
-          "title":"Testimonials",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_TESTIMONALS"      
-        },
-        {
-          "content_type":"text",
-          "title":"Reviews",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_REVIEWS"
+          "title":"Menu",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_MENU"
         },
         {
           "content_type":"text",
@@ -871,7 +931,6 @@ function sendQuickRepliesActions(recipientId){
       ]
     }
   };
-
   callSendAPI(messageData);
 }
 
@@ -929,6 +988,7 @@ function showAskContactTemplate(recipientId){
 
   callSendAPI(messageData);
   isContactAsked = true;
+  isOrderInProgress = true;
 }
 
 function showTableSelectionQuickReplies(recipientId){
@@ -1154,6 +1214,42 @@ function getElementsJson(subMenuArray){
   }
   //return elements;
   return JSON.stringify(elements);  
+}
+
+function showOrderContinuationForm(recipientId){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+    attachment:{
+      type:"template",
+      payload:{
+        template_type:"button",
+        text:"You Were in middle of order. Do you want to continue?",
+        buttons:[
+          {
+            type:"postback",
+            title:"Continue Order",
+            payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE"
+          },
+          {
+            type:"postback",
+            title:"Start Over",
+            payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CANCEL"
+          }
+        ]
+      }
+  };
+
+  callSendAPI(messageData);
+}
+
+function showMenu(recipientId){
+  setTimeout(function(){    
+            sendTypingOn(senderID);
+            sendMainMenu(senderID);
+          },delayMills);
 }
 
 /*
