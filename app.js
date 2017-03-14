@@ -866,7 +866,7 @@ function showTestimonials(recipientId){
     recipient: {
       id: recipientId
     },message:{
-      text:testimonialsText;
+      text:testimonialsText
     }
   };
 
