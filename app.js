@@ -693,14 +693,7 @@ function sendWelcomeMessage(recipientId) {
              {
               title:"Welcome to Chili's Bar & Cafe",
               image_url:"https://b.zmtcdn.com/data/pictures/4/97824/ebbcf1c5632b53257159facd17b1557a.jpg",
-              subtitle:"Try Delicious Food",
-              default_action: {
-                type: "web_url",
-                url: "https://www.zomato.com/hyderabad/chilis-banjara-hills",
-                messenger_extensions: true,
-                webview_height_ratio: "tall",
-                fallback_url: "https://www.zomato.com/hyderabad/chilis-banjara-hills"
-              },
+              subtitle:"Try Delicious Food",              
               buttons:[
                 {
                   type:"postback",
@@ -742,7 +735,7 @@ function sendMainMenu(recipientId){
           template_type: "generic",
           elements: [{
             title: "Food",
-            subtitle: "Tasty & Cryspy Food",               
+            subtitle: "Tasty Cryspy Food",               
             image_url: "https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg",
             buttons: [{
               type: "postback",
