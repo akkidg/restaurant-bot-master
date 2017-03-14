@@ -28,7 +28,8 @@ app.use(express.static('public'));
 var delayMills = 1000;
 var reviewCounter = 0;
 
-var isContactAsked = isOrderInProgress = false;
+var isContactAsked = false;
+var isOrderInProgress = false;
 
 var timeSlot;
 var userContact = 0;
