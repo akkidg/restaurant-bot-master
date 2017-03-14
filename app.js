@@ -34,10 +34,10 @@ var userContact = 0;
 var bookingNumber;
 
 var reviews = [
-  "Christina R.\nThis place gets busy! And it seems like there are some repeat customers because the waitress (the only waitress working) knew people's names. The waitress was FAST, efficient, patient, she was great for handling all of those tables. She was so chipper and happy too. The food was spot on, there is a reason why 'famous' is in the name of their restaurant. You can sit inside or outside where there are tables out front. I've seen people bring their dogs with them to sit outside too. The entire staff is nice, even the nice guy that brings the food out. They do take out, and deliver ($50 min I believe).",
-  "Kyle P.\nI used to eat here two times a week and man do I miss it. We have since moved and I have not found a Greek restaurant that compares. Mike and Mike Jr. both have great personal service.  You can tell that they take pride in their food and care about your personal experience with them.  Highly recommend this place!",
-  "Bill K.\nThe Moussaka is just amazing!! Coupled with the Greek Salad that accompanies it- you have a meal you just can't beat!  Really like this quaint little place and all its amazing menu items!",
-  "Tori B.\nNo Complaints from this girl.  We order from here at least twice a month the food is always fresh and hot.  The online ordering system is easy to navigate and customizable for  people like me who can never order an item as it comes. I always have to change something and the online system lets me do that.\nThe 1/4 chicken is always crispy and juicy at the same time , the mini Greek salad is more than enough to fill me up.  Spanikopita oh how I love thee crispy and full of flavor. The potato salad is always flavorful and never bland perfect blend of spices."  
+  "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
+  "Faraaz Farshori\nAwesome restaurant and great food with warm service! This is not thenfirst time I have been here but it seems tey have hired some really professional customer care personnel like 'smart sunil' who value a customer and go out of their way to make them confortable and make their experience delightful!! Way to go chili's",
+  "Meghana Kumar\nThis is officially my favorite place to go.Get the luscious burger, nachos, and just be grateful that food like this exists. :"") Neat, crisp ambiance. Authentic service. And a great menu.Slightly pricy. But it's definitely one of those guilty pleasure places. ",
+  "Ganesh Puvvala\nChili's has great ambience and great food. You will never disappointed with this place. The staff hospitality is good. This is my first time here. Will definitely visit again."  
 ];
 
 var subMenu = {
@@ -60,38 +60,42 @@ var subMenu = {
 
 var items = {
   "burgers":[
-  {"title":"Southerd SmokeHouse Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Sweet & Smoky Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/908f5107783eefc0f28928bd12ae7fe0.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Classic Bacon Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/34e1e71122a4e5da53171cbeebfdeba0.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Quacamole Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}  
+  {"title":"Southerd SmokeHouse Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Sweet & Smoky Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/908f5107783eefc0f28928bd12ae7fe0.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Classic Bacon Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/34e1e71122a4e5da53171cbeebfdeba0.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Quacamole Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}  
   ],
   "salads":[
-  {"title":"Greeled Chicken Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/e7d/86fe276bc6699f1b23f26905b88d9e7d_1483553335.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Fresco Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/b62/ed24ca3b3612ad1b5e20765b25460b62_1478001660.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Ancho Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/51e/b34e6ba87e273a0781014de71738e51e_1476011172.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  {"title":"Greeled Chicken Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/e7d/86fe276bc6699f1b23f26905b88d9e7d_1483553335.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Fresco Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/b62/ed24ca3b3612ad1b5e20765b25460b62_1478001660.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Ancho Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/51e/b34e6ba87e273a0781014de71738e51e_1476011172.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}
   ],
   "seafood":[
-  {"title":"Chiptole Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/696/e08c4cbe0501e95f645daafc8b4dd696_1475529419.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Grilled Basa","image_url":"https://b.zmtcdn.com/data/reviews_photos/40e/ffceafaa765a1def0235cf27ecad840e_1475346328.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Crumb Fried Fish & Chips","image_url":"https://b.zmtcdn.com/data/reviews_photos/3d6/a79e3c9bfcaca4580fc00186f560b3d6_1473109729.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  {"title":"Chiptole Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/696/e08c4cbe0501e95f645daafc8b4dd696_1475529419.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Grilled Basa","image_url":"https://b.zmtcdn.com/data/reviews_photos/40e/ffceafaa765a1def0235cf27ecad840e_1475346328.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Crumb Fried Fish & Chips","image_url":"https://b.zmtcdn.com/data/reviews_photos/3d6/a79e3c9bfcaca4580fc00186f560b3d6_1473109729.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}
   ],
   "handcrafted":[
-  {"title":"Whisky Lemonade","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Old Fashioned","image_url":"https://b.zmtcdn.com/data/reviews_photos/34f/5676f2a78f165525f21b9ab19cc0534f_1477210279.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Michelada","image_url":"https://b.zmtcdn.com/data/reviews_photos/d9c/f04b4c8ee4a62f898880ecf0dced7d9c_1486963831.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Hot Toddy","image_url":"https://b.zmtcdn.com/data/reviews_photos/05e/d84440bd6f0d10bb78b635c797c8805e_1485488313.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}  
+  {"title":"Whisky Lemonade","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Old Fashioned","image_url":"https://b.zmtcdn.com/data/reviews_photos/34f/5676f2a78f165525f21b9ab19cc0534f_1477210279.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Michelada","image_url":"https://b.zmtcdn.com/data/reviews_photos/d9c/f04b4c8ee4a62f898880ecf0dced7d9c_1486963831.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Hot Toddy","image_url":"https://b.zmtcdn.com/data/reviews_photos/05e/d84440bd6f0d10bb78b635c797c8805e_1485488313.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}  
   ],
   "premium":[
-  {"title":"Presedente Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Rita Trio","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Tropical Sunrise Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/9a1/749bab000dcec9a1ce46765b839129a1_1480817043.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  {"title":"Presedente Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Rita Trio","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Tropical Sunrise Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/9a1/749bab000dcec9a1ce46765b839129a1_1480817043.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}
   ],
   "icecold":[
-  {"title":"Long Island Ice Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/073/b11593aa5516925c33c717d3e7b99073_1485145167.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Long Island Mango Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/7c2/d6bda9c747f9ca6d4c11070c6ae117c2_1484152140.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Long Island Strawberry Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/3df/5f3ded7eca9da72868a0cfdf392093df_1473109659.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  {"title":"Long Island Ice Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/073/b11593aa5516925c33c717d3e7b99073_1485145167.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Long Island Mango Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/7c2/d6bda9c747f9ca6d4c11070c6ae117c2_1484152140.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"},
+  {"title":"Long Island Strawberry Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/3df/5f3ded7eca9da72868a0cfdf392093df_1473109659.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK"}
   ]
 }
+
+var serviceHighlights = "Our Service Highlights\n- Home Delivery\n- Full Bar Available\n- Live Music\n- Smoking Area\n- Wifi\n- Live Sports Screening\n- Valet Parking Available\n- Featured in Collection\n- Happy hours";
+var testimonials = "Awesome restaurant and great food with warm service!\nCuisines\nMexican, American, Tex-Mex, Burger";
+var knowFor = "Known For\nSignature Margaritas, American portions and music";
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -401,7 +405,22 @@ function receivedMessage(event) {
       case 'book a table':
 
       break;
- 
+
+      case 'food':
+        sendTypingOn(senderID);
+        showSubMenu(senderID,"food");
+      break;
+
+      case 'drinks':
+        sendTypingOn(senderID);
+        showSubMenu(senderID,"drinks");
+      break;
+
+      case 'deserts':
+        sendTypingOn(senderID); 
+        showSubMenu(senderID,"deserts");
+      break; 
+
       default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
@@ -619,6 +638,10 @@ function receivedPostback(event) {
           sendTypingOn(senderID);
           showItemTemplate(senderID,"icecold");
         break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK':
+          sendTypingOn(senderID);
+          sendQuickRepliesActions(senderID);
+        break;
         default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
@@ -804,9 +827,9 @@ function sendLocationTemplate(recipientId){
           template_type: "generic",
           elements:[
           {
-            title:"Famous Greek Salads",
-            image_url:"https://maps.googleapis.com/maps/api/staticmap?center=28.0123703,-82.7125298&markers=color:red%7Clabel:C%7C28.012431,-82.7138837&zoom=16&size=600x400&key=AIzaSyBJqqGGwS1HthhCLL1HC8F5AcUeMu6eQVs",
-            item_url:"https://www.google.co.in/maps/place/Famous+Greek+Salads/@28.012431,-82.7138837,17z/data=!3m1!4b1!4m5!3m4!1s0x88c2ee75f53b20b9:0xdeb12856e08e448d!8m2!3d28.012431!4d-82.711695"    
+            title:"Chili's Bar & Cafe",
+            image_url:"https://maps.googleapis.com/maps/api/staticmap?center=17.4232651,78.4488292&markers=color:red%7Clabel:C%7C17.4228191,78.4495778&zoom=16&size=600x400&key=AIzaSyBJqqGGwS1HthhCLL1HC8F5AcUeMu6eQVs",
+            item_url:"https://www.google.co.in/maps/place/Chili's,+Banjara+Hills/@17.4223607,78.4474679,17z/data=!4m12!1m6!3m5!1s0x3bcb972ff51ff959:0xb9156f0a0239f86c!2sChili's,+Banjara+Hills!8m2!3d17.4223607!4d78.4496566!3m4!1s0x3bcb972ff51ff959:0xb9156f0a0239f86c!8m2!3d17.4223607!4d78.4496566"    
           }
           ]
         }
@@ -821,7 +844,7 @@ function sendOpeningHoursText(recipientId){
     recipient: {
       id: recipientId
     },message:{
-      text:"RESTAURANT HOURS\nSunday 11:00AM - 04:00PM\nMonday thru Saturday 11:00AM - 08:30PM"
+      text:"RESTAURANT HOURS\n12 Noon to 11 PM"
     }
   };
 
@@ -1079,7 +1102,7 @@ function showTestimonials(recipientId){
     recipient: {
       id: recipientId
     },message:{
-      text:"Famous Greek Salads offers fresh and healthy Greek food at reasonable prices. Catering Available."
+      text:testimonials + "\n" + serviceHighlights + "\n" + knowFor;
     }
   };
 
