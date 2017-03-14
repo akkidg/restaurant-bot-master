@@ -1240,8 +1240,11 @@ function showOrderContinuationForm(recipientId){
             payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CANCEL"
           }
         ]
+        }
       }
+    }
   };
+   
 
   callSendAPI(messageData);
 }
