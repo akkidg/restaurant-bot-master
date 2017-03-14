@@ -42,19 +42,19 @@ var reviews = [
 
 var subMenu = {
   "food":[
-  {"title":"Burgers","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/26c7e0533eb80938d85d8ce6c5403b7d.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Salads","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"},
-  {"title":"Sea Food","image_url":"https://b.zmtcdn.com/data/reviews_photos/18c/7ec87b08ce81077c5b2a626efe39a18c_1475417145.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK"}
+  {"title":"Burgers","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/26c7e0533eb80938d85d8ce6c5403b7d.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Burgers"},
+  {"title":"Salads","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Salads"},
+  {"title":"Sea Food","image_url":"https://b.zmtcdn.com/data/reviews_photos/18c/7ec87b08ce81077c5b2a626efe39a18c_1475417145.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
   ],
   "drinks":[
-  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"},
-  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"},
-  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK"}
+  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Handcrafted Drinks"},
+  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Premium Wines"},
+  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Ice Cold Beers"}
   ],
   "deserts":[
-  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/6b4cf4424e5527c738c8e3f6fe355e71.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"},
-  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"},
-  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK"}
+  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/6b4cf4424e5527c738c8e3f6fe355e71.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Eggless Brownie"},
+  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Chocolate Chip"},
+  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Molten Chocolate Cake"}
   ] 
 }
 
@@ -569,9 +569,9 @@ function receivedPostback(event) {
           sendTypingOn(senderID);
           sendOpeningHoursText(senderID);
 
-          setTimeout(function(){    
+          /*setTimeout(function(){    
             sendQuickReplySpecial(senderID);
-          },delayMills);
+          },delayMills);*/
           break;
         case 'GET_STARTED_BUTTON_PAYLOAD':
           console.log("Received postback for get started button");
@@ -620,6 +620,12 @@ function receivedPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ITEM_BACK':
           sendTypingOn(senderID);
           sendQuickRepliesActions(senderID);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK':
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK':
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK':
         break;
         default:
         sendTypingOn(senderID);
@@ -736,12 +742,12 @@ function sendMainMenu(recipientId){
           template_type: "generic",
           elements: [{
             title: "Food",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Family-Meals/c=5864/clear/",               
+            subtitle: "Tasty & Cryspy Food",               
             image_url: "https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD",
-              title: "Checkout"
+              title: "Explore Food"
             },{
               type:"phone_number",
               title:"Call",
@@ -753,12 +759,12 @@ function sendMainMenu(recipientId){
             }],
           }, {
             title: "Drinks",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Soups-and-Starters/c=1518/clear/",               
+            subtitle: "Chilled Drinks",               
             image_url: "https://b.zmtcdn.com/data/pictures/4/97824/e74c3c1e40eff1d32dc4842ff5a8217d_top_thumb_620_314.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS",
-              title: "Checkout"
+              title: "Explore Drink"
             },{
               type:"phone_number",
               title:"Call",
@@ -770,12 +776,12 @@ function sendMainMenu(recipientId){
             }]
           },{
             title: "Deserts",
-            item_url: "https://www.famousgreeksalads.com/order-food-online/Famous-Favorites/c=6239/clear/",               
+            subtitle: "Delicious Deserts",               
             image_url: "https://b.zmtcdn.com/data/reviews_photos/fd4/cfe452dea8c8804678b88dbf55070fd4_1470577220.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS",
-              title: "Checkout"
+              title: "Explore Deserts"
             },{
               type:"phone_number",
               title:"Call",
@@ -938,6 +944,56 @@ function showTableSelectionQuickReplies(recipientId){
           "content_type":"text",
           "title":"More than 5",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE"
+        }
+      ]
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+function showTimeSlotSelectionQuickReplies(recipientId){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: "Please select table time",
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":"12 - 2",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12"      
+        },
+        {
+          "content_type":"text",
+          "title":"2 - 4",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2"
+        },
+        {
+          "content_type":"text",
+          "title":"4 - 6",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4"
+        },
+        {
+          "content_type":"text",
+          "title":"6 - 8",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6"
+        },
+        {
+          "content_type":"text",
+          "title":"8 - 10",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8"
+        },
+        {
+          "content_type":"text",
+          "title":"10 - 12",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10"
+        },
+        {
+          "content_type":"text",
+          "title":"Cancel",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL"
         }
       ]
     }
