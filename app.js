@@ -36,7 +36,7 @@ var bookingNumber;
 var reviews = [
   "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
   "Faraaz Farshori\nAwesome restaurant and great food with warm service! This is not thenfirst time I have been here but it seems tey have hired some really professional customer care personnel like 'smart sunil' who value a customer and go out of their way to make them confortable and make their experience delightful!! Way to go chili's",
-  "Meghana Kumar\nThis is officially my favorite place to go.Get the luscious burger, nachos, and just be grateful that food like this exists. :"") Neat, crisp ambiance. Authentic service. And a great menu.Slightly pricy. But it's definitely one of those guilty pleasure places. ",
+  "Meghana Kumar\nThis is officially my favorite place to go.Get the luscious burger, nachos, and just be grateful that food like this exists. Neat, crisp ambiance. Authentic service. And a great menu.Slightly pricy. But it's definitely one of those guilty pleasure places. ",
   "Ganesh Puvvala\nChili's has great ambience and great food. You will never disappointed with this place. The staff hospitality is good. This is my first time here. Will definitely visit again."  
 ];
 
