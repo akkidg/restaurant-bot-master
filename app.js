@@ -1245,9 +1245,9 @@ function showOrderContinuationForm(recipientId){
     }
   };
    
-
   callSendAPI(messageData);
 }
+
 
 function showMenu(recipientId){
   setTimeout(function(){    
