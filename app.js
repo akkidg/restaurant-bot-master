@@ -1361,7 +1361,9 @@ function showMenu(recipientId){
 }
 
 function showOrderConfirmationQuickReplies(recipientId,text){
+  var user = UserSession[recipientId];
   if(user == null)  return;
+  
   user.isOrderInProgress = false;
   var messageData = {
     recipient: {
