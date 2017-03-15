@@ -620,12 +620,12 @@ function receivedPostback(event) {
             if(firstName != ""){
               var greetText = "Hello " + firstName + ", Welcome to Chili's Bar & Cafe"
 
-              showTextTemplate(recipientId,greetText);
+              showTextTemplate(senderID,greetText);
               setTimeout(function(){
-                sendWelcomeMessage(recipientId);
+                sendWelcomeMessage(senderID);
               },delayMills);
             }else{
-               sendWelcomeMessage(recipientId); 
+               sendWelcomeMessage(senderID); 
             }
           });
         break;        
