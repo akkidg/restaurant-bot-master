@@ -28,13 +28,10 @@ app.use(express.static('public'));
 var delayMills = 1000;
 var reviewCounter = 0;
 
-var isContactAsked = false;
-var isOrderInProgress = false;
+var firstName = "";
 
 var timeSlot;
-var userContact;
 var bookingNumber;
-var firstName = "";
 
 var reviews = [
   "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
@@ -99,6 +96,8 @@ var items = {
 var serviceHighlights = "Our Service Highlights\n- Home Delivery\n- Full Bar Available\n- Live Music\n- Smoking Area\n- Wifi\n- Live Sports Screening\n- Valet Parking Available\n- Featured in Collection\n- Happy hours";
 var testimonials = "Awesome restaurant and great food with warm service!\nCuisines\nMexican, American, Tex-Mex, Burger";
 var knowFor = "Known For\nSignature Margaritas, American portions and music";
+
+var UserSession = {};
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -312,6 +311,8 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
+  var user = UserSession[senderID];
+
   if (isEcho) {
     // Just logging message echoes to console
     console.log("Received echo for message %s and app %d with metadata %s", 
@@ -326,17 +327,19 @@ function receivedMessage(event) {
     return;
   }
 
-  if(isContactAsked){
-    userContact = messageText;
-    isContactAsked = false;
-    showTableSelectionQuickReplies(senderID);
-    return;
-  }
+  if(user != null){
+    if(user.contactNum == null){
+      user.contactNum = messageText;
+      showTableSelectionQuickReplies(user.fbId);
+      return;
+    }
 
-  if(isOrderInProgress){
-    showOrderContinuationForm(senderID);
-    return;
+    if(user.isOrderInProgress){
+      showOrderContinuationForm(user.fbId);
+      return;
+    }
   }
+  
 
   if (messageText) {
     messageText = messageText.toLowerCase();
@@ -484,20 +487,25 @@ function receivedQuickReplyPostback(event) {
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
+  var user = UserSession[senderID];
+
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
     switch (payload) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
-          bookingNumber = "Two";
-          showTimeSlotSelectionQuickReplies(senderID);
+          if(user == null)  return;
+          user.bookingNumber = "Two";
+          showTimeSlotSelectionQuickReplies(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE':
-          bookingNumber = "For Two to Five";
-          showTimeSlotSelectionQuickReplies(senderID);
+          if(user == null)  return;
+          user.bookingNumber = "For Two to Five";
+          showTimeSlotSelectionQuickReplies(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE':
-          bookingNumber = "For More Than Five";  
-          showTimeSlotSelectionQuickReplies(senderID);
+          if(user == null)  return;
+          user.bookingNumber = "For More Than Five";  
+          showTimeSlotSelectionQuickReplies(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
           sendTypingOn(senderID);
@@ -516,48 +524,56 @@ function receivedQuickReplyPostback(event) {
           sendMainMenu(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
-          timeSlot = "12-2";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "12-2";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
-          timeSlot = "2-4";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "2-4";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
-          timeSlot = "4-6";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "4-6";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
-          timeSlot = "6-8";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "6-8";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
-          timeSlot = "8-10";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "8-10";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
-          timeSlot = "10-12";
-          var text = "Thank you, " + firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(senderID,text);
+          if(user == null)  return;
+          user.timeSlot = "10-12";
+          var text = "Thank you, " + user.firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(user.fbId,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
-          timeSlot = null;
-          showTextTemplate(senderID,"Sorry, can't proceed your booking, you have not selected any time slot?");
+          if(user == null)  return;
+          user.timeSlot = null;
+          showTextTemplate(user.fbId,"Sorry, can't proceed your booking, you have not selected any time slot?");
           setTimeout(function(){
-            showOrderContinuationForm(senderID);
+            showOrderContinuationForm(user.fbId);
           },500);
         break;   
         default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
     }
-  }else if(isOrderInProgress){
-    showOrderContinuationForm(senderID);
+  }else if(user != null){
+    if(user.isOrderInProgress)
+      showOrderContinuationForm(user.fbId);
     return;
   }else{
     sendTypingOn(senderID);
@@ -581,6 +597,8 @@ function receivedPostback(event) {
   // button for Structured Messages. 
   var payload = event.postback.payload;
 
+  var user = UserSession[senderID];
+
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
@@ -601,12 +619,26 @@ function receivedPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE':
           sendTypingOn(senderID);
-          if(userContact && bookingNumber == null)
-            showTableSelectionQuickReplies(senderID);
-          else if(bookingNumber)
-            showTimeSlotSelectionQuickReplies(senderID);
+
+          var user;
+
+          if(UserSession[senderID] == null){
+            getUserInfo(senderID,function(){
+              if(firstName != ""){
+                user = new User(senderID,firstName);
+                UserSession[senderID] = user;                
+              }
+            });
+          }else{
+            user = UserSession[senderID];
+          }
+
+          if(user.contactNum && user.bookingNumber == null)
+            showTableSelectionQuickReplies(user.fbId);
+          else if(user.bookingNumber)
+            showTimeSlotSelectionQuickReplies(user.fbId);
           else
-            showAskContactTemplate(senderID);
+            showAskContactTemplate(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS':
           sendTypingOn(senderID);
@@ -618,19 +650,35 @@ function receivedPostback(event) {
           break;
         case 'GET_STARTED_BUTTON_PAYLOAD':
           console.log("Received postback for get started button");
-          sendTypingOn(senderID);
-          getUserInfo(senderID,function(){
-            if(firstName != ""){
-              var greetText = "Hello " + firstName + ", Welcome to Chili's Bar & Cafe"
 
-              showTextTemplate(senderID,greetText);
-              setTimeout(function(){
-                sendWelcomeMessage(senderID);
-              },delayMills);
-            }else{
-               sendWelcomeMessage(senderID); 
-            }
-          });
+          sendTypingOn(senderID);
+
+          if(UserSession[senderID] == null){
+            getUserInfo(senderID,function(){
+              if(firstName != ""){
+                var user = new User(senderID,firstName);
+                UserSession[senderID] = user;
+
+                var greetText = "Hello " + user.firstName + ", Welcome to Chili's Bar & Cafe"
+
+                showTextTemplate(user.fbId,greetText);
+                setTimeout(function(){
+                  sendWelcomeMessage(user.fbId);
+                },delayMills);
+              }else{
+                 sendWelcomeMessage(senderID); 
+              }
+            });
+          }else{
+            var user = UserSession[senderID];
+            var greetText = "Hello " + user.firstName + ", Welcome to Chili's Bar & Cafe"
+
+            showTextTemplate(user.fbId,greetText);
+            setTimeout(function(){
+              sendWelcomeMessage(user.fbId);
+            },delayMills);
+          }          
+          
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
           sendTypingOn(senderID);
@@ -701,16 +749,18 @@ function receivedPostback(event) {
           },delayMills);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CANCEL':
-          isOrderInProgress = false;
-          bookingNumber = null;
-          timeSlot = null;
-          showMenu(senderID);
+          if(user == null) return;
+          user.isOrderInProgress = false;
+          user.bookingNumber = null;
+          user.timeSlot = null;
+          showMenu(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
-          if(bookingNumber)
-            showTimeSlotSelectionQuickReplies(senderID);            
+          if(user == null) return;
+          if(user.bookingNumber)
+            showTimeSlotSelectionQuickReplies(user.fbId);            
           else
-            showTableSelectionQuickReplies(senderID);
+            showTableSelectionQuickReplies(user.fbId);
         break;
         default:
         sendTypingOn(senderID);
@@ -1003,17 +1053,23 @@ function showTextTemplate(recipientId,msgText){
 
 function showAskContactTemplate(recipientId){
   var text;
-  if(firstName == ""){
-    getUserInfo(recipientId,function(){
+
+  var user;
+
+  if(UserSession[senderID] == null){
+    getUserInfo(senderID,function(){
       if(firstName != ""){
-        text = "Hello " + firstName + ", Please give us your contact number?";
-        showContactTemplate(recipientId,text);
+        user = new User(senderID,firstName);
+        UserSession[senderID] = user;                
       }
-    });  
+    });
   }else{
-    text = "Hello " + firstName + ", Please give us your contact number?";
-    showContactTemplate(recipientId,text);
-  }  
+    user = UserSession[senderID];
+  }
+
+  text = "Hello " + user.firstName + ", Please give us your contact number?";
+  showContactTemplate(recipientId,text);
+
 }
 
 function showContactTemplate(recipientId,text){
@@ -1026,8 +1082,11 @@ function showContactTemplate(recipientId,text){
   };
 
   callSendAPI(messageData);
-  isContactAsked = true;
-  isOrderInProgress = true;
+
+  var user = UserSession[senderID];
+  if(user != null){
+    user.isOrderInProgress = true;
+  }
 }
 
 function showTableSelectionQuickReplies(recipientId){
@@ -1294,6 +1353,8 @@ function showMenu(recipientId){
 }
 
 function showOrderConfirmationQuickReplies(recipientId,text){
+  if(user == null)  return;
+  user.isOrderInProgress = false;
   var messageData = {
     recipient: {
       id: recipientId
@@ -1316,6 +1377,15 @@ function showOrderConfirmationQuickReplies(recipientId,text){
   };
   callSendAPI(messageData);
 }
+
+function User(fbId,firstName){
+  this.fbId = fbId;
+  this.firstName = firstName;
+  this.contactNum;
+  this.bookingNumber;
+  this.timeSlot;
+  this.isOrderInProgress = false;
+};
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
