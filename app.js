@@ -1064,15 +1064,15 @@ function showAskContactTemplate(recipientId){
 
   var user;
 
-  if(UserSession[senderID] == null){
-    getUserInfo(senderID,function(){
+  if(UserSession[recipientId] == null){
+    getUserInfo(recipientId,function(){
       if(firstName != ""){
-        user = new User(senderID,firstName);
-        UserSession[senderID] = user;                
+        user = new User(recipientId,firstName);
+        UserSession[recipientId] = user;                
       }
     });
   }else{
-    user = UserSession[senderID];
+    user = UserSession[recipientId];
   }
 
   text = "Hello " + user.firstName + ", Please give us your contact number?";
@@ -1091,7 +1091,7 @@ function showContactTemplate(recipientId,text){
 
   callSendAPI(messageData);
 
-  var user = UserSession[senderID];
+  var user = UserSession[recipientId];
   if(user != null){
     user.isOrderInProgress = true;
   }
