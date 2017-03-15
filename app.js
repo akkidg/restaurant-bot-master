@@ -517,33 +517,33 @@ function receivedQuickReplyPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
           timeSlot = "12-2";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
           timeSlot = "2-4";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
           timeSlot = "4-6";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
           timeSlot = "6-8";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
           timeSlot = "8-10";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
           timeSlot = "10-12";
-          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
-          showMenu(senderID);
+          var text = "Thank you, " + firstName + " Your booking confirmed";
+          showOrderConfirmationQuickReplies(senderID,text);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
           timeSlot = null;
@@ -1292,6 +1292,28 @@ function showMenu(recipientId){
             sendMainMenu(recipientId);
           },delayMills);
 }
+
+function showOrderConfirmationQuickReplies(recipientId,text){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: text,
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":"Checkout our Menu",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_MENU"      
+        },
+        {
+          "content_type":"text",
+          "title":"Back",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_START_OVER"
+        }
+      ]
+    }
+  };
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
