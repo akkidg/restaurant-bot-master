@@ -607,7 +607,7 @@ function receivedPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE':
           sendTypingOn(senderID);
-          if(userContact && bookingNumber != null)
+          if(userContact && bookingNumber == null)
             showTableSelectionQuickReplies(senderID);
           else if(bookingNumber)
             showTimeSlotSelectionQuickReplies(senderID);
@@ -704,7 +704,7 @@ function receivedPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
           if(bookingNumber)
             showTimeSlotSelectionQuickReplies(senderID);            
-          else if(bookingNumber != null)
+          else
             showTableSelectionQuickReplies(senderID);
         break;
         default:
