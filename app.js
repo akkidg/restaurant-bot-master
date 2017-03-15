@@ -32,7 +32,7 @@ var isContactAsked = false;
 var isOrderInProgress = false;
 
 var timeSlot;
-var userContact = 0;
+var userContact;
 var bookingNumber;
 
 var reviews = [
@@ -49,14 +49,14 @@ var subMenu = {
   {"title":"Sea Food","image_url":"https://b.zmtcdn.com/data/reviews_photos/18c/7ec87b08ce81077c5b2a626efe39a18c_1475417145.jpg","subtitle":"Fresh Sea food","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
   ],
   "drinks":[
-  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Handcrafted Drinks"},
-  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Premium Wines"},
-  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Ice Cold Beers"}
+  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Drinks"},
+  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Wines"},
+  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Beers"}
   ],
   "deserts":[
-  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/6b4cf4424e5527c738c8e3f6fe355e71.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Eggless Brownie"},
-  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Chocolate Chip"},
-  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore Molten Chocolate Cake"}
+  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/6b4cf4424e5527c738c8e3f6fe355e71.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"}
   ] 
 }
 
@@ -607,7 +607,7 @@ function receivedPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_BOOK_TABLE':
           sendTypingOn(senderID);
-          if(userContact)
+          if(userContact && bookingNumber != null)
             showTableSelectionQuickReplies(senderID);
           else if(bookingNumber)
             showTimeSlotSelectionQuickReplies(senderID);
@@ -702,12 +702,10 @@ function receivedPostback(event) {
           showMenu(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
-          if(userContact)
+          if(bookingNumber)
+            showTimeSlotSelectionQuickReplies(senderID);            
+          else if(bookingNumber != null)
             showTableSelectionQuickReplies(senderID);
-          else if(bookingNumber)
-            showTimeSlotSelectionQuickReplies(senderID);
-          else
-            showAskContactTemplate(senderID);
         break;
         default:
         sendTypingOn(senderID);
@@ -998,7 +996,7 @@ function showTableSelectionQuickReplies(recipientId){
       id: recipientId
     },
     message: {
-      text: "How many people's are with you?",
+      text: "Please select table size?",
       quick_replies: [
         {
           "content_type":"text",
