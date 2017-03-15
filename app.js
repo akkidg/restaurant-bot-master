@@ -517,12 +517,12 @@ function receivedQuickReplyPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
           timeSlot = "12-2";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
           timeSlot = "2-4";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
@@ -548,6 +548,9 @@ function receivedQuickReplyPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
           timeSlot = null;
           showTextTemplate(senderID,"Sorry, can't proceed your booking, you have not selected any time slot?");
+          setTimeout(function(){
+            showOrderContinuationForm(senderID);
+          },500);
         break;   
         default:
         sendTypingOn(senderID);
