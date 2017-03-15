@@ -1314,6 +1314,8 @@ function showOrderConfirmationQuickReplies(recipientId,text){
       ]
     }
   };
+  callSendAPI(messageData);
+}
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
