@@ -1249,8 +1249,8 @@ function showOrderContinuationForm(recipientId){
 
 function showMenu(recipientId){
   setTimeout(function(){    
-            sendTypingOn(senderID);
-            sendMainMenu(senderID);
+            sendTypingOn(recipientId);
+            sendMainMenu(recipientId);
           },delayMills);
 }
 
