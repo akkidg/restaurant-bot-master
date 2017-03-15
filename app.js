@@ -345,45 +345,20 @@ function receivedMessage(event) {
     // the text we received.
     switch (messageText) {    
 
-      case 'today\'s special':
-        sendTypingOn(senderID);
-        sendAllSpecial(senderID);
-      break;
-
-      case 'todays special':
-        sendTypingOn(senderID);
-        sendAllSpecial(senderID);        
-      break;  
-
       case 'menu':
         sendTypingOn(senderID);
         sendMainMenu(senderID);
-      break;
-
-      case 'special':
-        sendTypingOn(senderID);
-        sendAllSpecial(senderID);
-        break;
-
-      case 'special dishes':
-        sendTypingOn(senderID);
-        sendAllSpecial(senderID);
-        break;        
-
-      case 'party':
-        sendTypingOn(senderID);
-        sendPartySpecial(senderID);
-        break;        
-
-      case 'party special':
-        sendTypingOn(senderID);
-        sendPartySpecial(senderID);
-        break;       
+      break;       
 
       case 'opening hours':
         sendTypingOn(senderID);
         sendOpeningHoursText(senderID);
       break;   
+
+      case 'hours':
+        sendTypingOn(senderID);
+        sendOpeningHoursText(senderID);
+      break;
 
       case 'gallery':
         /*sendTypingOn(senderID);
@@ -399,6 +374,11 @@ function receivedMessage(event) {
         sendTypingOn(senderID);
         showReviews(senderID);
       break;      
+
+      case 'review':
+        sendTypingOn(senderID);
+        showReviews(senderID);
+      break;
 
       case 'hungry':
         
@@ -428,6 +408,16 @@ function receivedMessage(event) {
         sendTypingOn(senderID); 
         showSubMenu(senderID,"deserts");
       break; 
+
+      case 'location':
+        sendTypingOn(senderID);
+        sendLocationTemplate(senderID);
+      break;
+
+      case 'our location':
+        sendTypingOn(senderID);
+        sendLocationTemplate(senderID);
+      break;
 
       default:
         sendTypingOn(senderID);
@@ -625,7 +615,7 @@ function receivedPostback(event) {
         case 'GET_STARTED_BUTTON_PAYLOAD':
           console.log("Received postback for get started button");
           sendTypingOn(senderID);
-          sendWelcomeMessage(senderID);
+          getUserInfo(senderID);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
           sendTypingOn(senderID);
@@ -753,6 +743,32 @@ function receivedAccountLink(event) {
 
   console.log("Received account link event with for user %d with status %s " +
     "and auth code %s ", senderID, status, authCode);
+}
+
+function getUserInfo(recipientId) {
+  var uri = 'https://graph.facebook.com/v2.6/' + recipientId;
+  request({
+    uri: uri,
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'GET'
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log("user profile body : " + body);
+      /*var jsonObject =  JSON.parse(body);
+
+      var firstName = jsonObject.first_name;
+
+      var greetText = "Hello " + firstName + ", Welcome to Chili's Bar & Cafe"
+
+      showTextTemplate(recipientId,greetText);
+      setTimeout(function(){
+        sendWelcomeMessage(recipientId);
+      },delayMills);*/
+      
+    } else {
+      console.error("Failed calling User Profile API", response.statusCode, response.statusMessage, body.error);
+    }
+  });  
 }
 
 /*
@@ -1245,7 +1261,6 @@ function showOrderContinuationForm(recipientId){
    
   callSendAPI(messageData);
 }
-
 
 function showMenu(recipientId){
   setTimeout(function(){    
