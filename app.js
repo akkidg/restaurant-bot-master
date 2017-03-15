@@ -661,7 +661,8 @@ function receivedPostback(event) {
 
           sendTypingOn(senderID);
 
-          if(UserSession[senderID] == null){
+          UserSession[senderID] = null;
+
             getUserInfo(senderID,function(){
               if(firstName != ""){
                 var user = new User(senderID,firstName);
@@ -677,15 +678,6 @@ function receivedPostback(event) {
                  sendWelcomeMessage(senderID); 
               }
             });
-          }else{
-            var user = UserSession[senderID];
-            var greetText = "Hello " + user.firstName + ", Welcome to Chili's Bar & Cafe"
-
-            showTextTemplate(user.fbId,greetText);
-            setTimeout(function(){
-              sendWelcomeMessage(user.fbId);
-            },delayMills);
-          }          
           
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
