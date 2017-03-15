@@ -527,22 +527,22 @@ function receivedQuickReplyPostback(event) {
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
           timeSlot = "4-6";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
           timeSlot = "6-8";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
           timeSlot = "8-10";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
           timeSlot = "10-12";
-          showTextTemplate(senderID,"Thank you, somename. Your booking confirmed.");
+          showTextTemplate(senderID,"Thank you, " + firstName + " Your booking confirmed.");
           showMenu(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
