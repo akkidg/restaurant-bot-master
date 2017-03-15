@@ -754,7 +754,7 @@ function getUserInfo(recipientId) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log("user profile body : " + body);
-      /*var jsonObject =  JSON.parse(body);
+      var jsonObject =  JSON.parse(body);
 
       var firstName = jsonObject.first_name;
 
@@ -763,7 +763,7 @@ function getUserInfo(recipientId) {
       showTextTemplate(recipientId,greetText);
       setTimeout(function(){
         sendWelcomeMessage(recipientId);
-      },delayMills);*/
+      },delayMills);
       
     } else {
       console.error("Failed calling User Profile API", response.statusCode, response.statusMessage, body.error);
