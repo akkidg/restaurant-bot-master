@@ -34,6 +34,7 @@ var isOrderInProgress = false;
 var timeSlot;
 var userContact;
 var bookingNumber;
+var firstName = "";
 
 var reviews = [
   "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
@@ -615,7 +616,18 @@ function receivedPostback(event) {
         case 'GET_STARTED_BUTTON_PAYLOAD':
           console.log("Received postback for get started button");
           sendTypingOn(senderID);
-          getUserInfo(senderID);
+          getUserInfo(senderID,function(){
+            if(firstName != ""){
+              var greetText = "Hello " + firstName + ", Welcome to Chili's Bar & Cafe"
+
+              showTextTemplate(recipientId,greetText);
+              setTimeout(function(){
+                sendWelcomeMessage(recipientId);
+              },delayMills);
+            }else{
+               sendWelcomeMessage(recipientId); 
+            }
+          });
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK':        
           sendTypingOn(senderID);
@@ -745,7 +757,7 @@ function receivedAccountLink(event) {
     "and auth code %s ", senderID, status, authCode);
 }
 
-function getUserInfo(recipientId) {
+var getUserInfo = function (recipientId,callback) {
   var uri = 'https://graph.facebook.com/v2.6/' + recipientId;
   request({
     uri: uri,
@@ -755,21 +767,15 @@ function getUserInfo(recipientId) {
     if (!error && response.statusCode == 200) {
       console.log("user profile body : " + body);
       var jsonObject =  JSON.parse(body);
-
-      var firstName = jsonObject.first_name;
-
-      var greetText = "Hello " + firstName + ", Welcome to Chili's Bar & Cafe"
-
-      showTextTemplate(recipientId,greetText);
-      setTimeout(function(){
-        sendWelcomeMessage(recipientId);
-      },delayMills);
-      
+      firstName = jsonObject.first_name;      
+      callback();
     } else {
+      firstName = "";
+      callback();
       console.error("Failed calling User Profile API", response.statusCode, response.statusMessage, body.error);
     }
   });  
-}
+};
 
 /*
  * Send a text message using the Send API.
@@ -993,11 +999,26 @@ function showTextTemplate(recipientId,msgText){
 }
 
 function showAskContactTemplate(recipientId){
+  var text;
+  if(firstName == ""){
+    getUserInfo(recipientId,function(){
+      if(firstName != ""){
+        text = "Hello " + firstName + ", Please give us your contact number?";
+        showContactTemplate(recipientId,text);
+      }
+    });  
+  }else{
+    text = "Hello " + firstName + ", Please give us your contact number?";
+    showContactTemplate(recipientId,text);
+  }  
+}
+
+function showContactTemplate(recipientId,text){
   var messageData = {
     recipient: {
       id: recipientId
     },message:{
-      text:"Hello, SomeName. Please give us your contact number?"
+      text:text
     }
   };
 
