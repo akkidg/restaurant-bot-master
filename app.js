@@ -626,19 +626,27 @@ function receivedPostback(event) {
             getUserInfo(senderID,function(){
               if(firstName != ""){
                 user = new User(senderID,firstName);
-                UserSession[senderID] = user;                
-              }
+                UserSession[senderID] = user;    
+
+                            
+              }if(user.contactNum && user.bookingNumber == null)
+                  showTableSelectionQuickReplies(user.fbId);
+                else if(user.bookingNumber)
+                  showTimeSlotSelectionQuickReplies(user.fbId);
+                else
+                  showAskContactTemplate(user.fbId);
             });
           }else{
             user = UserSession[senderID];
+            if(user.contactNum && user.bookingNumber == null)
+              showTableSelectionQuickReplies(user.fbId);
+            else if(user.bookingNumber)
+              showTimeSlotSelectionQuickReplies(user.fbId);
+            else
+              showAskContactTemplate(user.fbId);
           }
 
-          if(user.contactNum && user.bookingNumber == null)
-            showTableSelectionQuickReplies(user.fbId);
-          else if(user.bookingNumber)
-            showTimeSlotSelectionQuickReplies(user.fbId);
-          else
-            showAskContactTemplate(user.fbId);
+          
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS':
           sendTypingOn(senderID);
