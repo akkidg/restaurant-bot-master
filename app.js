@@ -1412,10 +1412,10 @@ function getUserData(){
   var userRef = database.ref('/users');
   userRef.once('value',function(snapshot){
     snapshot.forEach(function(childsnapshot){
-      /*var userid = childsnapshot.userId;
-      var firstName = childsnapshot.firstName;
-      console.log("user: " + userid + "," + firstName);*/
-      console.log("user: " + childsnapshot.val());
+      var userid = childsnapshot.val().userId;
+      var firstName = childsnapshot.val().firstName;
+      console.log("user: " + userid + "," + firstName);
+      //console.log("user: " + childsnapshot.val());
     });
   });
 }
