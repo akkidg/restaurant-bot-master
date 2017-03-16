@@ -750,10 +750,8 @@ function receivedPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CANCEL':
           if(user == null) return;
-          user.isOrderInProgress = false;
-          user.bookingNumber = null;
-          user.timeSlot = null;
-          showMenu(user.fbId);
+          UserSession[senderID] = null;
+          showMenu(senderID);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
           if(user == null) return;
@@ -890,7 +888,7 @@ function sendMainMenu(recipientId){
           template_type: "generic",
           elements: [{
             title: "Food",
-            subtitle: "Tasty Cryspy Food",               
+            subtitle: "Tasty Crispy Food",               
             image_url: "https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg",
             buttons: [{
               type: "postback",
