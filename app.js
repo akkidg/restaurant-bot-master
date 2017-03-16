@@ -17,7 +17,8 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request'),
-  firebase  = require('firebase');
+  firebase  = require('firebase'),
+  schedule = require('node-schedule');
 
   const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
   const FIREBASE_AUTH_DOMAIN = process.env.FIREBASE_AUTH_DOMAIN;
@@ -482,6 +483,7 @@ function receivedDeliveryConfirmation(event) {
   console.log("All message before %d were delivered.", watermark);
 }
 
+
 /*
  * Quick Reply Postback Event
  *
@@ -662,7 +664,6 @@ function receivedPostback(event) {
             else
               showAskContactTemplate(user.fbId);
           }
-
           
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS':
@@ -679,6 +680,8 @@ function receivedPostback(event) {
           sendTypingOn(senderID);
 
           UserSession[senderID] = null;
+
+            getUserData();
 
             getUserInfo(senderID,function(){
               if(firstName != ""){
@@ -1403,6 +1406,17 @@ function showOrderConfirmationQuickReplies(recipientId,text){
     }
   };
   callSendAPI(messageData);
+}
+
+function getUserData(){
+  var userRef = database.ref('users/');
+  userRef.once('value',function(snapshot){
+    snapshot.forEach(function(childsnapshot){
+      var userid = childsnapshot.userId;
+      var firstName = childsnapshot.firstName;
+      console.log("user: " + userid + "," + firstName);
+    });
+  });
 }
 
 function User(fbId,firstName){
