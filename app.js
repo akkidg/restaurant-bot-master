@@ -853,7 +853,6 @@ function saveUserToFirebase(recipientId,firstName,last_name){
     lastName : last_name
   });
 }
-
 /*
  * Send a text message using the Send API.
  *
