@@ -16,7 +16,7 @@ const
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),  
-  request = require('request');
+  request = require('request'),
   firebase  = require('firebase');
 
   const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
