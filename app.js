@@ -1409,7 +1409,7 @@ function showOrderConfirmationQuickReplies(recipientId,text){
 }
 
 function getUserData(){
-  var userRef = database.ref('users/');
+  var userRef = database.ref('users');
   userRef.once('value',function(snapshot){
     snapshot.forEach(function(childsnapshot){
       var userid = childsnapshot.userId;
