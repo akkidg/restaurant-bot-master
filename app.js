@@ -24,14 +24,14 @@ const
   const FIREBASE_DB_URL = process.env.FIREBASE_DB_URL;
   const FIREBASE_STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET;
 
-  var config = {
+  var firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
     authDomain: FIREBASE_AUTH_DOMAIN,
     databaseURL: FIREBASE_DB_URL,
     storageBucket: FIREBASE_STORAGE_BUCKET,
   };
 
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
