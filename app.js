@@ -17,6 +17,21 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request');
+  firebase  = require('firebase');
+
+  const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
+  const FIREBASE_AUTH_DOMAIN = process.env.FIREBASE_AUTH_DOMAIN;
+  const FIREBASE_DB_URL = process.env.FIREBASE_DB_URL;
+  const FIREBASE_STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET;
+
+  var config = {
+    apiKey: FIREBASE_API_KEY,
+    authDomain: FIREBASE_AUTH_DOMAIN,
+    databaseURL: FIREBASE_DB_URL,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+  };
+
+firebase.initializeApp(config);
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -32,6 +47,8 @@ var firstName = "";
 
 var timeSlot;
 var bookingNumber;
+
+var database = firebase.database();
 
 var reviews = [
   "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
@@ -818,7 +835,8 @@ var getUserInfo = function (recipientId,callback) {
     if (!error && response.statusCode == 200) {
       console.log("user profile body : " + body);
       var jsonObject =  JSON.parse(body);
-      firstName = jsonObject.first_name;      
+      firstName = jsonObject.first_name;
+      saveUserToFirebase(recipientId,firstName,jsonObject.last_name);      
       callback();
     } else {
       firstName = "";
@@ -827,6 +845,14 @@ var getUserInfo = function (recipientId,callback) {
     }
   });  
 };
+
+function saveUserToFirebase(recipientId,firstName,last_name){
+  database.ref('users/'+recipientId).set({
+    userId : recipientId,
+    firstName : firstName,
+    lastName : last_name
+  });
+}
 
 /*
  * Send a text message using the Send API.
