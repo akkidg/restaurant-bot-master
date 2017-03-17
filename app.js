@@ -1465,7 +1465,7 @@ function startHourlyBradcast(){
     userRef.once('value',function(snapshot){
       snapshot.forEach(function(childsnapshot){
         var userid = childsnapshot.val().userId;
-        Var msg = "Hi " + childsnapshot.val().firstName + ", this is test broadcast.";
+        var msg = "Hi " + childsnapshot.val().firstName + ", this is test broadcast.";
         showTextTemplate(userid,msg);
       });
     });
