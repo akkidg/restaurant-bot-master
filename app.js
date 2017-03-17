@@ -1460,7 +1460,10 @@ function callSendAPI(messageData) {
 }
 
 function startHourlyBradcast(){
-  schedule.scheduleJob('10 * * * *',function(){
+  var rule = new schedule.RecurrenceRule();
+  rule.minute = 35;
+
+  schedule.scheduleJob(rule,function(){
     var userRef = database.ref('/users');
     userRef.once('value',function(snapshot){
       snapshot.forEach(function(childsnapshot){
