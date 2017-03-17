@@ -1459,10 +1459,25 @@ function callSendAPI(messageData) {
   });  
 }
 
+function startHourlyBradcast(){
+  schedule.scheduleJob({minute: 30},function(){
+    var userRef = database.ref('/users');
+    userRef.once('value',function(snapshot){
+      snapshot.forEach(function(childsnapshot){
+        var userid = childsnapshot.val().userId;
+        Var msg = "Hi " + childsnapshot.val().firstName + ", this is test broadcast.";
+        showTextTemplate(userid,msg);
+      });
+    });
+  });
+  console.log("hourly broadcast start");
+}
+
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid 
 // certificate authority.
 app.listen(app.get('port'), function() {
+  startHourlyBradcast();
   console.log('Node app is running on port', app.get('port'));
 });
 
