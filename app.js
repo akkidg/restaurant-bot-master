@@ -681,7 +681,7 @@ function receivedPostback(event) {
 
           UserSession[senderID] = null;
 
-            getUserData();
+            //getUserData();
 
             getUserInfo(senderID,function(){
               if(firstName != ""){
@@ -1460,7 +1460,7 @@ function callSendAPI(messageData) {
 }
 
 function startHourlyBradcast(){
-  schedule.scheduleJob({minute: 30},function(){
+  schedule.scheduleJob('10 * * * * *',function(){
     var userRef = database.ref('/users');
     userRef.once('value',function(snapshot){
       snapshot.forEach(function(childsnapshot){
