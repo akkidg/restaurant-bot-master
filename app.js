@@ -1460,7 +1460,7 @@ function callSendAPI(messageData) {
 }
 
 function startHourlyBradcast(){
-  schedule.scheduleJob('10 * * * * *',function(){
+  schedule.scheduleJob('10 * * * *',function(){
     var userRef = database.ref('/users');
     userRef.once('value',function(snapshot){
       snapshot.forEach(function(childsnapshot){
