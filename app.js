@@ -870,6 +870,7 @@ function sendWelcomeMessage(recipientId) {
         type:"template",
         payload:{
           template_type:"generic",
+          image_aspect_ratio:"square",
           elements:[
              {
               title:"Welcome to Chili's Bar & Cafe",
@@ -1480,7 +1481,7 @@ function startHourlyBradcast(){
 // Webhooks must be available via SSL with a certificate signed by a valid 
 // certificate authority.
 app.listen(app.get('port'), function() {
-  startHourlyBradcast();
+  //startHourlyBradcast();
   console.log('Node app is running on port', app.get('port'));
 });
 
