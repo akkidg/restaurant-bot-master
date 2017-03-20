@@ -60,54 +60,54 @@ var reviews = [
 
 var subMenu = {
   "food":[
-  {"title":"Burgers","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/26c7e0533eb80938d85d8ce6c5403b7d.jpg","subtitle":"Yummy Burgers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Burgers"},
-  {"title":"Salads","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"Tasty Salads","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Salads"},
-  {"title":"Sea Food","image_url":"https://b.zmtcdn.com/data/reviews_photos/18c/7ec87b08ce81077c5b2a626efe39a18c_1475417145.jpg","subtitle":"Fresh Sea food","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
+  {"title":"Burgers","image_url":SERVER_URL + "/assets/images/food1/food1.jpg","subtitle":"Yummy Burgers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Burgers"},
+  {"title":"Salads","image_url":SERVER_URL + "/assets/images/food2/food2.jpg","subtitle":"Tasty Salads","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Salads"},
+  {"title":"Sea Food","image_url":SERVER_URL + "/assets/images/food3/food3.jpg","subtitle":"Fresh Sea food","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
   ],
   "drinks":[
-  {"title":"Handcrafted Drinks","image_url":"https://b.zmtcdn.com/data/reviews_photos/535/63395f8c548a5a17dfe18e04330bc535_1473109844.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Drinks"},
-  {"title":"Premium Wines","image_url":"https://b.zmtcdn.com/data/reviews_photos/27f/a948d00251fe9c87fbd213f228bd727f_1472917649.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Wines"},
-  {"title":"Ice Cold Beers","image_url":"https://b.zmtcdn.com/data/reviews_photos/1cc/08f289c6d5769a0d792b2afe77d8d1cc_1471640882.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Beers"}
+  {"title":"Handcrafted Drinks","image_url":SERVER_URL + "/assets/images/drink1/drink1.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Drinks"},
+  {"title":"Premium Wines","image_url":SERVER_URL + "/assets/images/drink2/drink2.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Wines"},
+  {"title":"Ice Cold Beers","image_url":SERVER_URL + "/assets/images/drink3/drink3.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Beers"}
   ],
   "deserts":[
-  {"title":"Eggless Brownie","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/6b4cf4424e5527c738c8e3f6fe355e71.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
-  {"title":"Chocolate Chip Paradise Pie","image_url":"https://b.zmtcdn.com/data/reviews_photos/88d/bebaa236bfd9215da7e59d35582ea88d_1473091156.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
-  {"title":"Molten Chocolate Cake","image_url":"https://b.zmtcdn.com/data/reviews_photos/c9b/0f774bea3313f545ffa0802aefe12c9b_1475499955.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"}
+  {"title":"Eggless Brownie","image_url":SERVER_URL + "/assets/images/desert1/desert1.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+  {"title":"Chocolate Chip Paradise Pie","image_url":SERVER_URL + "/assets/images/desert2/desert2.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+  {"title":"Molten Chocolate Cake","image_url":SERVER_URL + "/assets/images/desert3/desert3.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"}
   ] 
 }
 
 var items = {
   "burgers":[
-  {"title":"Southerd SmokeHouse Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Sweet & Smoky Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/908f5107783eefc0f28928bd12ae7fe0.jpg","subtitle":"$7.5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Classic Bacon Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/34e1e71122a4e5da53171cbeebfdeba0.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Quacamole Burger","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/20a048c4293c724f3f7dfc82a751d3d9.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
+  {"title":"Southerd SmokeHouse Burger","image_url":SERVER_URL + "/assets/images/food11/food11.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Sweet & Smoky Burger","image_url":SERVER_URL + "/assets/images/food11/food12.jpg","subtitle":"$7.5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Classic Bacon Burger","image_url":SERVER_URL + "/assets/images/food11/food13.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Quacamole Burger","image_url":SERVER_URL + "/assets/images/food11/food14.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
   ],
   "salads":[
-  {"title":"Greeled Chicken Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/e7d/86fe276bc6699f1b23f26905b88d9e7d_1483553335.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Fresco Salad","image_url":"https://b.zmtcdn.com/data/reviews_photos/b62/ed24ca3b3612ad1b5e20765b25460b62_1478001660.jpg","subtitle":"$3.2","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Ancho Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/51e/b34e6ba87e273a0781014de71738e51e_1476011172.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+  {"title":"Greeled Chicken Salad","image_url":SERVER_URL + "/assets/images/food21/food21.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Fresco Salad","image_url":SERVER_URL + "/assets/images/food21/food22.jpg","subtitle":"$3.2","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Ancho Salmon","image_url":SERVER_URL + "/assets/images/food21/food23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
   ],
   "seafood":[
-  {"title":"Chiptole Salmon","image_url":"https://b.zmtcdn.com/data/reviews_photos/696/e08c4cbe0501e95f645daafc8b4dd696_1475529419.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Grilled Basa","image_url":"https://b.zmtcdn.com/data/reviews_photos/40e/ffceafaa765a1def0235cf27ecad840e_1475346328.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Crumb Fried Fish & Chips","image_url":"https://b.zmtcdn.com/data/reviews_photos/3d6/a79e3c9bfcaca4580fc00186f560b3d6_1473109729.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+  {"title":"Chiptole Salmon","image_url":SERVER_URL + "/assets/images/food31/food31.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Grilled Basa","image_url":SERVER_URL + "/assets/images/food31/food32.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Crumb Fried Fish & Chips","image_url":SERVER_URL + "/assets/images/food31/food33.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
   ],
   "handcrafted":[
-  {"title":"Whisky Lemonade","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Old Fashioned","image_url":"https://b.zmtcdn.com/data/reviews_photos/34f/5676f2a78f165525f21b9ab19cc0534f_1477210279.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Michelada","image_url":"https://b.zmtcdn.com/data/reviews_photos/d9c/f04b4c8ee4a62f898880ecf0dced7d9c_1486963831.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Hot Toddy","image_url":"https://b.zmtcdn.com/data/reviews_photos/05e/d84440bd6f0d10bb78b635c797c8805e_1485488313.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
+  {"title":"Whisky Lemonade","image_url":SERVER_URL + "/assets/images/drink11/drink11.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Old Fashioned","image_url":SERVER_URL + "/assets/images/drink11/drink12.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Michelada","image_url":SERVER_URL + "/assets/images/drink11/drink13.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Hot Toddy","image_url":SERVER_URL + "/assets/images/drink11/drink14.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
   ],
   "premium":[
-  {"title":"Presedente Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/1c7/c224975e8dc973dd8529f3672475b1c7_1473109685.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Rita Trio","image_url":"https://b.zmtcdn.com/data/pictures/chains/7/90847/dc0097fbeba5315fb671093405a02c0f.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Tropical Sunrise Margarita","image_url":"https://b.zmtcdn.com/data/reviews_photos/9a1/749bab000dcec9a1ce46765b839129a1_1480817043.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+  {"title":"Presedente Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink21.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Rita Trio","image_url":SERVER_URL + "/assets/images/drink21/drink22.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Tropical Sunrise Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
   ],
   "icecold":[
-  {"title":"Long Island Ice Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/073/b11593aa5516925c33c717d3e7b99073_1485145167.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Long Island Mango Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/7c2/d6bda9c747f9ca6d4c11070c6ae117c2_1484152140.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Long Island Strawberry Tea","image_url":"https://b.zmtcdn.com/data/reviews_photos/3df/5f3ded7eca9da72868a0cfdf392093df_1473109659.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+  {"title":"Long Island Ice Tea","image_url":SERVER_URL + "/assets/images/drink31/drink31.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Long Island Mango Tea","image_url":SERVER_URL + "/assets/images/drink31/drink32.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+  {"title":"Long Island Strawberry Tea","image_url":SERVER_URL + "/assets/images/drink31/drink33.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
   ]
 }
 
@@ -874,7 +874,7 @@ function sendWelcomeMessage(recipientId) {
           elements:[
              {
               title:"Welcome to Chili's Bar & Cafe",
-              image_url:"https://b.zmtcdn.com/data/pictures/4/97824/ebbcf1c5632b53257159facd17b1557a.jpg",
+              image_url:SERVER_URL + "/assets/images/chillis.jpg",
               subtitle:"Try Delicious Food",              
               buttons:[
                 {
@@ -918,7 +918,7 @@ function sendMainMenu(recipientId){
           elements: [{
             title: "Food",
             subtitle: "Tasty Crispy Food",               
-            image_url: "https://b.zmtcdn.com/data/reviews_photos/ffc/13a6b39dae49d67b7b3fdd536e8c8ffc_1473079760.jpg",
+            image_url: SERVER_URL + "/assets/images/food/food.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD",
@@ -935,7 +935,7 @@ function sendMainMenu(recipientId){
           }, {
             title: "Drinks",
             subtitle: "Chilled Drinks",               
-            image_url: "https://b.zmtcdn.com/data/pictures/4/97824/e74c3c1e40eff1d32dc4842ff5a8217d_top_thumb_620_314.jpg",
+            image_url: SERVER_URL + "/assets/images/drinks/drinks.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS",
@@ -952,7 +952,7 @@ function sendMainMenu(recipientId){
           },{
             title: "Deserts",
             subtitle: "Delicious Deserts",               
-            image_url: "https://b.zmtcdn.com/data/reviews_photos/fd4/cfe452dea8c8804678b88dbf55070fd4_1470577220.jpg",
+            image_url: SERVER_URL + "/assets/images/deserts/deserts.jpg",
             buttons: [{
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS",
