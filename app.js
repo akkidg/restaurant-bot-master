@@ -72,7 +72,6 @@ const SERVER_URL = (process.env.SERVER_URL) ?
   (process.env.SERVER_URL) :
   config.get('serverURL');
 
-
 var reviews = [
   "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
   "Faraaz Farshori\nAwesome restaurant and great food with warm service! This is not thenfirst time I have been here but it seems tey have hired some really professional customer care personnel like 'smart sunil' who value a customer and go out of their way to make them confortable and make their experience delightful!! Way to go chili's",
@@ -933,7 +932,7 @@ function sendMainMenu(recipientId){
               type: "postback",
               payload: "DEVELOPER_DEFINED_PAYLOAD_FOR_MAIN_MENU_BACK",
               title: "Back"
-            }],
+            }]
           }, {
             title: "Drinks",
             subtitle: "Chilled Drinks",               
