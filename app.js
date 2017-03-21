@@ -48,7 +48,7 @@ const
 
   // Order Booking variables
 
-  const totalBookingNumber = 20;
+  const maxSlotSize = 20;
 
   var firstName = "";
 
@@ -367,7 +367,7 @@ function receivedMessage(event) {
   if(user != null){
     if(user.contactNum == null){
       user.contactNum = messageText;
-      showTableSelectionQuickReplies(user.fbId);
+      showTimeSlotSelectionQuickReplies(user.fbId);
       return;
     }
 
@@ -502,7 +502,6 @@ function receivedDeliveryConfirmation(event) {
   console.log("All message before %d were delivered.", watermark);
 }
 
-
 /*
  * Quick Reply Postback Event
  *
@@ -526,6 +525,13 @@ function receivedQuickReplyPostback(event) {
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
   var user = UserSession[senderID];
+  if(user != null){
+    if(user.isOrderInProgress){
+      showOrderContinuationForm(user.fbId);
+      return;
+    }
+  }
+
 
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
@@ -533,27 +539,27 @@ function receivedQuickReplyPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ONE':
           if(user == null)  return;
           user.bookingNumber = 1;
-          showTimeSlotSelectionQuickReplies(user.fbId);
+          saveOrderToDatabase(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
           if(user == null)  return;
           user.bookingNumber = 2;
-          showTimeSlotSelectionQuickReplies(user.fbId);
+          saveOrderToDatabase(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_THREE':
           if(user == null)  return;
           user.bookingNumber = 3;  
-          showTimeSlotSelectionQuickReplies(user.fbId);
+          saveOrderToDatabase(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FOUR':
           if(user == null)  return;
           user.bookingNumber = 4;  
-          showTimeSlotSelectionQuickReplies(user.fbId);
+          saveOrderToDatabase(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FIVE':
           if(user == null)  return;
           user.bookingNumber = 5;  
-          showTimeSlotSelectionQuickReplies(user.fbId);
+          saveOrderToDatabase(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
           sendTypingOn(senderID);
@@ -574,41 +580,33 @@ function receivedQuickReplyPostback(event) {
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
           if(user == null)  return;
           user.timeSlot = "122";
-          saveOrderToDatabse(user.fbId);
+          checkIsBookingAvailable(senderID);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
           if(user == null)  return;
           user.timeSlot = "24";
-          saveOrderToDatabse(user.fbId);
+          checkIsBookingAvailable(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
           if(user == null)  return;
           user.timeSlot = "46";
-          saveOrderToDatabse(user.fbId);
+          checkIsBookingAvailable(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
           if(user == null)  return;
           user.timeSlot = "68";
-          saveOrderToDatabse(user.fbId);
+          checkIsBookingAvailable(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
           if(user == null)  return;
           user.timeSlot = "810";
-          saveOrderToDatabse(user.fbId);
+          checkIsBookingAvailable(senderID);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
           if(user == null)  return;
           user.timeSlot = "1012";
-          saveOrderToDatabse(user.fbId);
-        break;   
-        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
-          if(user == null)  return;
-          user.timeSlot = null;
-          showTextTemplate(user.fbId,"Sorry, can't proceed your booking, you have not selected any time slot?");
-          setTimeout(function(){
-            showOrderContinuationForm(user.fbId);
-          },500);
-        break;   
+          checkIsBookingAvailable(senderID);
+        break;
         default:
         sendTypingOn(senderID);
         sendWelcomeMessage(senderID);
@@ -668,26 +666,29 @@ function receivedPostback(event) {
             getUserInfo(senderID,function(){
               if(firstName != ""){
                 user = new User(senderID,firstName);
-                UserSession[senderID] = user;    
-
-                            
-              }if(user.contactNum && user.bookingNumber == null)
-                  showTableSelectionQuickReplies(user.fbId);
-                else if(user.bookingNumber)
-                  showTimeSlotSelectionQuickReplies(user.fbId);
-                else
-                  showAskContactTemplate(user.fbId);
+                UserSession[senderID] = user;                           
+              }
+              if(user.bookForDay == null)
+                showOrderBookingPreference(senderID);
+              else if(user.contactNum && user.bookingNumber == null)
+                showTableSelectionQuickReplies(user.fbId);
+              else if(user.bookingNumber)
+                showTimeSlotSelectionQuickReplies(user.fbId);
+              else
+                showAskContactTemplate(user.fbId);
             });
           }else{
             user = UserSession[senderID];
-            if(user.contactNum && user.bookingNumber == null)
+            if(user.bookForDay == null)
+              showOrderBookingPreference(senderID);
+            else if(user.contactNum && user.bookingNumber == null)
               showTableSelectionQuickReplies(user.fbId);
             else if(user.bookingNumber)
               showTimeSlotSelectionQuickReplies(user.fbId);
             else
               showAskContactTemplate(user.fbId);
-          }
-          
+          }  
+
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_OPENING_HOURS':
           sendTypingOn(senderID);
@@ -798,10 +799,24 @@ function receivedPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_CONTINUE':
           if(user == null) return;
-          if(user.bookingNumber)
-            showTimeSlotSelectionQuickReplies(user.fbId);            
+          if(user.bookForDay)
+            showAskContactTemplate(user.fbId);
+          else if(user.contact)
+            showTimeSlotSelectionQuickReplies(user.fbId);   
+          else if(user.timeSlot)            
+            showTableSelectionQuickReplies(user.fbId);         
           else
-            showTableSelectionQuickReplies(user.fbId);
+            showOrderBookingPreference(user.fbId);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_TODAY':
+          if(user == null) return;
+          user.bookForDay = 0;
+          showAskContactTemplate(user.fbId);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_TOMORROW':
+          if(user == null) return;
+          user.bookForDay = 1;
+          showAskContactTemplate(user.fbId);
         break;
         default:
         sendTypingOn(senderID);
@@ -1131,11 +1146,7 @@ function showContactTemplate(recipientId,text){
   };
 
   callSendAPI(messageData);
-
-  var user = UserSession[recipientId];
-  if(user != null){
-    user.isOrderInProgress = true;
-  }
+  
 }
 
 function showTableSelectionQuickReplies(recipientId){
@@ -1215,11 +1226,6 @@ function showTimeSlotSelectionQuickReplies(recipientId){
           "content_type":"text",
           "title":"10 - 12",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10"
-        },
-        {
-          "content_type":"text",
-          "title":"Cancel",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL"
         }
       ]
     }
@@ -1228,7 +1234,7 @@ function showTimeSlotSelectionQuickReplies(recipientId){
   callSendAPI(messageData);
 }
 
-function saveOrderToDatabse(recipientId){
+function saveOrderToDatabase(recipientId){
   var user = UserSession[recipientId];
   if(user == null)  return;
 
@@ -1426,6 +1432,11 @@ function showOrderContinuationForm(recipientId){
   };
    
   callSendAPI(messageData);
+
+  var user = UserSession[recipientId];
+  if(user != null){
+    user.isOrderInProgress = true;
+  }
 }
 
 function showMenu(recipientId){
@@ -1477,6 +1488,43 @@ function getUserData(){
   });
 }
 
+function checkIsBookingAvailable(recipientId){
+  var user = UserSession[recipientId];
+  if(user == null) return;  
+  var selectedDay = user.bookForDay;
+  var startTimeStamp, endTimeStamp;
+
+  var today = new Date();
+
+  if(selectedDay == 0){
+    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 00, 59, 50, 1000).getTime();
+    endTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 50, 1000).getTime();
+  } else{
+    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + 1), 00, 59, 50, 1000).getTime();
+    endTimeStamp = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + 1), 23, 59, 50, 1000).getTime();
+  }
+
+  var currentSlotTableSize = 0;
+
+  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp).once('value',function(snapshot){
+    snapshot.forEach(function(childsnapshot){
+      if(user.timeSlot == childsnapshot.val().timeSlot){
+        currentSlotTableSize += childsnapshot.val().tablesize;
+      }
+    },function(currentSlotTableSize){
+        if(currentSlotTableSize == maxSlotSize){
+          var text = "Booking for your time slot is full, please select different one"          
+          showTextTemplate(user.fbId,text);
+          setTimeout(function(){
+            showTimeSlotSelectionQuickReplies(user.fbId);
+          },delayMills);
+        } else{
+          showTableSelectionQuickReplies(user.fbId);
+        }
+    });
+  });
+}
+
 function User(fbId,firstName){
   this.fbId = fbId;
   this.firstName = firstName;
@@ -1484,7 +1532,39 @@ function User(fbId,firstName){
   this.bookingNumber;
   this.timeSlot;
   this.isOrderInProgress = false;
+  this.bookForDay;
 };
+
+function showOrderBookingPreference(recipientId){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+    attachment:{
+      type:"template",
+      payload:{
+        template_type:"button",
+        text:"When would you like to come?",
+        buttons:[
+          {
+            type:"postback",
+            title:"Today",
+            payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_TODAY"
+          },
+          {
+            type:"postback",
+            title:"Tomorrow",
+            payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_ORDER_TOMORROW"
+          }
+        ]
+        }
+      }
+    }
+  };
+   
+  callSendAPI(messageData);
+}
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
