@@ -1145,8 +1145,7 @@ function showContactTemplate(recipientId,text){
     }
   };
 
-  callSendAPI(messageData);
-  
+  callSendAPI(messageData);  
 }
 
 function showTableSelectionQuickReplies(recipientId){
