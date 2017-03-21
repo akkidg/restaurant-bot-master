@@ -39,7 +39,6 @@ const
   var database = firebase.database();
 
   const ordersReference = database.ref('orders');
-  const userRef = database.ref('users/');
 
   var app = express();
   app.set('port', process.env.PORT || 5000);
@@ -874,7 +873,7 @@ var getUserInfo = function (recipientId,callback) {
 };
 
 function saveUserToFirebase(recipientId,firstName,last_name){
-  userRef.ref(recipientId).set({
+  database.ref('users/' + recipientId).set({
     userId : recipientId,
     firstName : firstName,
     lastName : last_name
