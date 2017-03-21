@@ -1506,23 +1506,24 @@ function checkIsBookingAvailable(recipientId){
 
   var currentSlotTableSize = 0;
 
-  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp).once('value',function(snapshot){
-    snapshot.forEach(function(childsnapshot){
-      if(user.timeSlot == childsnapshot.val().timeSlot){
-        currentSlotTableSize += childsnapshot.val().tablesize;
-      }
-    },function(currentSlotTableSize){
-        if(currentSlotTableSize == maxSlotSize){
-          var text = "Booking for your time slot is full, please select different one"          
-          showTextTemplate(user.fbId,text);
-          setTimeout(function(){
-            showTimeSlotSelectionQuickReplies(user.fbId);
-          },delayMills);
-        } else{
-          showTableSelectionQuickReplies(user.fbId);
+  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp).once('value',
+    function(snapshot){
+      snapshot.forEach(function(childsnapshot){
+        if(user.timeSlot == childsnapshot.val().timeSlot){
+          currentSlotTableSize += childsnapshot.val().tablesize;
         }
+      });
+    },function(currentSlotTableSize){
+          if(currentSlotTableSize == maxSlotSize){
+            var text = "Booking for your time slot is full, please select different one"          
+            showTextTemplate(user.fbId,text);
+            setTimeout(function(){
+              showTimeSlotSelectionQuickReplies(user.fbId);
+            },delayMills);
+          } else{
+            showTableSelectionQuickReplies(user.fbId);
+          }
     });
-  });
 }
 
 function User(fbId,firstName){
