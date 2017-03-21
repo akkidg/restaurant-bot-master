@@ -1513,7 +1513,7 @@ function checkIsBookingAvailable(recipientId){
           currentSlotTableSize += childsnapshot.val().tablesize;
         }
       });
-    },function(currentSlotTableSize){
+    },function(){
           if(currentSlotTableSize == maxSlotSize){
             var text = "Booking for your time slot is full, please select different one"          
             showTextTemplate(user.fbId,text);
