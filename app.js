@@ -20,6 +20,8 @@ const
   firebase  = require('firebase'),
   schedule = require('node-schedule');
 
+  // Firebase Var Initialisation
+
   const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
   const FIREBASE_AUTH_DOMAIN = process.env.FIREBASE_AUTH_DOMAIN;
   const FIREBASE_DB_URL = process.env.FIREBASE_DB_URL;
@@ -32,111 +34,128 @@ const
     storageBucket: FIREBASE_STORAGE_BUCKET,
   };
 
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-var app = express();
-app.set('port', process.env.PORT || 5000);
-app.set('view engine', 'ejs');
-app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(express.static('public'));
+  var database = firebase.database();
 
-// Time Delay variable
-var delayMills = 1000;
-var reviewCounter = 0;
+  const ordersReference = database.ref('orders');
+  const userRef = database.ref('users/');
 
-var firstName = "";
+  var app = express();
+  app.set('port', process.env.PORT || 5000);
+  app.set('view engine', 'ejs');
+  app.use(bodyParser.json({ verify: verifyRequestSignature }));
+  app.use(express.static('public'));
 
-var timeSlot;
-var bookingNumber;
+  // Order Booking variables
 
-var database = firebase.database();
+  const totalBookingNumber = 20;
 
-// App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
-  process.env.MESSENGER_APP_SECRET :
-  config.get('appSecret');
+  var firstName = "";
 
-// Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
-  (process.env.MESSENGER_VALIDATION_TOKEN) :
-  config.get('validationToken');
+  var timeSlot;
+  var bookingNumber;
 
-// Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-  (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+  // Time Delay variable
+  var delayMills = 1000;
+  var reviewCounter = 0;
 
-// URL where the app is running (include protocol). Used to point to scripts and 
-// assets located at this address. 
-const SERVER_URL = (process.env.SERVER_URL) ?
-  (process.env.SERVER_URL) :
-  config.get('serverURL');
+  // Session Initialisation
 
-var reviews = [
-  "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
-  "Faraaz Farshori\nAwesome restaurant and great food with warm service! This is not thenfirst time I have been here but it seems tey have hired some really professional customer care personnel like 'smart sunil' who value a customer and go out of their way to make them confortable and make their experience delightful!! Way to go chili's",
-  "Meghana Kumar\nThis is officially my favorite place to go.Get the luscious burger, nachos, and just be grateful that food like this exists. Neat, crisp ambiance. Authentic service. And a great menu.Slightly pricy. But it's definitely one of those guilty pleasure places. ",
-  "Ganesh Puvvala\nChili's has great ambience and great food. You will never disappointed with this place. The staff hospitality is good. This is my first time here. Will definitely visit again."  
-];
+  var UserSession = {};
 
-var subMenu = {
-  "food":[
-  {"title":"Burgers","image_url":SERVER_URL + "/assets/images/food1/food1.jpg","subtitle":"Yummy Burgers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Burgers"},
-  {"title":"Salads","image_url":SERVER_URL + "/assets/images/food2/food2.jpg","subtitle":"Tasty Salads","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Salads"},
-  {"title":"Sea Food","image_url":SERVER_URL + "/assets/images/food3/food3.jpg","subtitle":"Fresh Sea food","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
-  ],
-  "drinks":[
-  {"title":"Handcrafted Drinks","image_url":SERVER_URL + "/assets/images/drink1/drink1.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Drinks"},
-  {"title":"Premium Wines","image_url":SERVER_URL + "/assets/images/drink2/drink2.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Wines"},
-  {"title":"Ice Cold Beers","image_url":SERVER_URL + "/assets/images/drink3/drink3.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Beers"}
-  ],
-  "deserts":[
-  {"title":"Eggless Brownie","image_url":SERVER_URL + "/assets/images/desert1/desert1.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
-  {"title":"Chocolate Chip Paradise Pie","image_url":SERVER_URL + "/assets/images/desert2/desert2.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
-  {"title":"Molten Chocolate Cake","image_url":SERVER_URL + "/assets/images/desert3/desert3.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"}
-  ] 
-}
+  /*
+    App Constants
+  */
 
-var items = {
-  "burgers":[
-  {"title":"Southerd SmokeHouse Burger","image_url":SERVER_URL + "/assets/images/food11/food11.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Sweet & Smoky Burger","image_url":SERVER_URL + "/assets/images/food11/food12.jpg","subtitle":"$7.5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Classic Bacon Burger","image_url":SERVER_URL + "/assets/images/food11/food13.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Quacamole Burger","image_url":SERVER_URL + "/assets/images/food11/food14.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
-  ],
-  "salads":[
-  {"title":"Greeled Chicken Salad","image_url":SERVER_URL + "/assets/images/food21/food21.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Fresco Salad","image_url":SERVER_URL + "/assets/images/food21/food22.jpg","subtitle":"$3.2","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Ancho Salmon","image_url":SERVER_URL + "/assets/images/food21/food23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
-  ],
-  "seafood":[
-  {"title":"Chiptole Salmon","image_url":SERVER_URL + "/assets/images/food31/food31.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Grilled Basa","image_url":SERVER_URL + "/assets/images/food31/food32.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Crumb Fried Fish & Chips","image_url":SERVER_URL + "/assets/images/food31/food33.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
-  ],
-  "handcrafted":[
-  {"title":"Whisky Lemonade","image_url":SERVER_URL + "/assets/images/drink11/drink11.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Old Fashioned","image_url":SERVER_URL + "/assets/images/drink11/drink12.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Michelada","image_url":SERVER_URL + "/assets/images/drink11/drink13.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Hot Toddy","image_url":SERVER_URL + "/assets/images/drink11/drink14.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
-  ],
-  "premium":[
-  {"title":"Presedente Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink21.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Rita Trio","image_url":SERVER_URL + "/assets/images/drink21/drink22.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Tropical Sunrise Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
-  ],
-  "icecold":[
-  {"title":"Long Island Ice Tea","image_url":SERVER_URL + "/assets/images/drink31/drink31.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Long Island Mango Tea","image_url":SERVER_URL + "/assets/images/drink31/drink32.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
-  {"title":"Long Island Strawberry Tea","image_url":SERVER_URL + "/assets/images/drink31/drink33.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
-  ]
-}
+  // App Secret can be retrieved from the App Dashboard
+  const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
+    process.env.MESSENGER_APP_SECRET :
+    config.get('appSecret');
 
-var serviceHighlights = "Our Service Highlights\n- Home Delivery\n- Full Bar Available\n- Live Music\n- Smoking Area\n- Wifi\n- Live Sports Screening\n- Valet Parking Available\n- Featured in Collection\n- Happy hours";
-var testimonials = "Awesome restaurant and great food with warm service!\nCuisines\nMexican, American, Tex-Mex, Burger";
-var knowFor = "Known For\nSignature Margaritas, American portions and music";
+  // Arbitrary value used to validate a webhook
+  const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
+    (process.env.MESSENGER_VALIDATION_TOKEN) :
+    config.get('validationToken');
 
-var UserSession = {};
+  // Generate a page access token for your page from the App Dashboard
+  const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
+    (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
+    config.get('pageAccessToken');
+
+  // URL where the app is running (include protocol). Used to point to scripts and 
+  // assets located at this address. 
+  const SERVER_URL = (process.env.SERVER_URL) ?
+    (process.env.SERVER_URL) :
+    config.get('serverURL');
+
+  /*
+  * Menu, Reviews, MenuItems Array Declaration
+  */  
+
+  var reviews = [
+    "Masooma Razavi\nChili's was a wonderfull host for us when we had planned to spend some quality time at the eve of our parents anniversary. And I can proudly say they live upto the expectations of the American chain in terms of Quantity, Ambience and Food. Located in Banjara hills close to the Punjagutta/Somajigua circle is a well lit signboard. The place has got its own little space outside which I really liked.",
+    "Faraaz Farshori\nAwesome restaurant and great food with warm service! This is not thenfirst time I have been here but it seems tey have hired some really professional customer care personnel like 'smart sunil' who value a customer and go out of their way to make them confortable and make their experience delightful!! Way to go chili's",
+    "Meghana Kumar\nThis is officially my favorite place to go.Get the luscious burger, nachos, and just be grateful that food like this exists. Neat, crisp ambiance. Authentic service. And a great menu.Slightly pricy. But it's definitely one of those guilty pleasure places. ",
+    "Ganesh Puvvala\nChili's has great ambience and great food. You will never disappointed with this place. The staff hospitality is good. This is my first time here. Will definitely visit again."  
+  ];
+
+  var subMenu = {
+    "food":[
+    {"title":"Burgers","image_url":SERVER_URL + "/assets/images/food1/food1.jpg","subtitle":"Yummy Burgers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_BURGER","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Burgers"},
+    {"title":"Salads","image_url":SERVER_URL + "/assets/images/food2/food2.jpg","subtitle":"Tasty Salads","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SALAD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Salads"},
+    {"title":"Sea Food","image_url":SERVER_URL + "/assets/images/food3/food3.jpg","subtitle":"Fresh Sea food","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_SEAFOOD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOOD_BACK","payload_title":"Explore Sea Food"}
+    ],
+    "drinks":[
+    {"title":"Handcrafted Drinks","image_url":SERVER_URL + "/assets/images/drink1/drink1.jpg","subtitle":"Chilled Handcrafted Drinks","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_HANDCRAFTED","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Drinks"},
+    {"title":"Premium Wines","image_url":SERVER_URL + "/assets/images/drink2/drink2.jpg","subtitle":"Strong wines","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_PREMIUM","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Wines"},
+    {"title":"Ice Cold Beers","image_url":SERVER_URL + "/assets/images/drink3/drink3.jpg","subtitle":"Mild Beers","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_ICECOLD","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKS_BACK","payload_title":"Explore Beers"}
+    ],
+    "deserts":[
+    {"title":"Eggless Brownie","image_url":SERVER_URL + "/assets/images/desert1/desert1.jpg","subtitle":"Sizzling Brownie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_EGGLESS","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+    {"title":"Chocolate Chip Paradise Pie","image_url":SERVER_URL + "/assets/images/desert2/desert2.jpg","subtitle":"Sweet Paradise Pie","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_CHOCOLATE","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"},
+    {"title":"Molten Chocolate Cake","image_url":SERVER_URL + "/assets/images/desert3/desert3.jpg","subtitle":"Delicious Molten cake","payload_checkout":"DEVELOPER_DEFINED_PAYLOAD_FOR_SUBMENU_MOLTEN","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DESERTS_BACK","payload_title":"Explore"}
+    ] 
+  }
+
+  var items = {
+    "burgers":[
+    {"title":"Southerd SmokeHouse Burger","image_url":SERVER_URL + "/assets/images/food11/food11.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Sweet & Smoky Burger","image_url":SERVER_URL + "/assets/images/food11/food12.jpg","subtitle":"$7.5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Classic Bacon Burger","image_url":SERVER_URL + "/assets/images/food11/food13.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Quacamole Burger","image_url":SERVER_URL + "/assets/images/food11/food14.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
+    ],
+    "salads":[
+    {"title":"Greeled Chicken Salad","image_url":SERVER_URL + "/assets/images/food21/food21.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Fresco Salad","image_url":SERVER_URL + "/assets/images/food21/food22.jpg","subtitle":"$3.2","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Ancho Salmon","image_url":SERVER_URL + "/assets/images/food21/food23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+    ],
+    "seafood":[
+    {"title":"Chiptole Salmon","image_url":SERVER_URL + "/assets/images/food31/food31.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Grilled Basa","image_url":SERVER_URL + "/assets/images/food31/food32.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Crumb Fried Fish & Chips","image_url":SERVER_URL + "/assets/images/food31/food33.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOODITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+    ],
+    "handcrafted":[
+    {"title":"Whisky Lemonade","image_url":SERVER_URL + "/assets/images/drink11/drink11.jpg","subtitle":"$6","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Old Fashioned","image_url":SERVER_URL + "/assets/images/drink11/drink12.jpg","subtitle":"$7","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Michelada","image_url":SERVER_URL + "/assets/images/drink11/drink13.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Hot Toddy","image_url":SERVER_URL + "/assets/images/drink11/drink14.jpg","subtitle":"$8","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}  
+    ],
+    "premium":[
+    {"title":"Presedente Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink21.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Rita Trio","image_url":SERVER_URL + "/assets/images/drink21/drink22.jpg","subtitle":"$5","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Tropical Sunrise Margarita","image_url":SERVER_URL + "/assets/images/drink21/drink23.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+    ],
+    "icecold":[
+    {"title":"Long Island Ice Tea","image_url":SERVER_URL + "/assets/images/drink31/drink31.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Long Island Mango Tea","image_url":SERVER_URL + "/assets/images/drink31/drink32.jpg","subtitle":"$4","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"},
+    {"title":"Long Island Strawberry Tea","image_url":SERVER_URL + "/assets/images/drink31/drink33.jpg","subtitle":"$3","default_action_url":"https://www.zomato.com/hyderabad/chilis-banjara-hills","payload_back":"DEVELOPER_DEFINED_PAYLOAD_FOR_DRINKSITEM_BACK","payload_review":"DEVELOPER_DEFINED_PAYLOAD_FOR_REVIEW"}
+    ]
+  }
+
+  var serviceHighlights = "Our Service Highlights\n- Home Delivery\n- Full Bar Available\n- Live Music\n- Smoking Area\n- Wifi\n- Live Sports Screening\n- Valet Parking Available\n- Featured in Collection\n- Happy hours";
+  var testimonials = "Awesome restaurant and great food with warm service!\nCuisines\nMexican, American, Tex-Mex, Burger";
+  var knowFor = "Known For\nSignature Margaritas, American portions and music";
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -512,19 +531,29 @@ function receivedQuickReplyPostback(event) {
    if (payload) {
     // If we receive a text payload, check to see if it matches any special
     switch (payload) {
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_ONE':
+          if(user == null)  return;
+          user.bookingNumber = 1;
+          showTimeSlotSelectionQuickReplies(user.fbId);
+        break;
         case 'DEVELOPER_DEFINED_PAYLOAD_FOR_TWO':
           if(user == null)  return;
-          user.bookingNumber = "Two";
+          user.bookingNumber = 2;
           showTimeSlotSelectionQuickReplies(user.fbId);
         break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE':
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_THREE':
           if(user == null)  return;
-          user.bookingNumber = "For Two to Five";
+          user.bookingNumber = 3;  
           showTimeSlotSelectionQuickReplies(user.fbId);
         break;
-        case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE':
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FOUR':
           if(user == null)  return;
-          user.bookingNumber = "For More Than Five";  
+          user.bookingNumber = 4;  
+          showTimeSlotSelectionQuickReplies(user.fbId);
+        break;
+        case 'DEVELOPER_DEFINED_PAYLOAD_FOR_FIVE':
+          if(user == null)  return;
+          user.bookingNumber = 5;  
           showTimeSlotSelectionQuickReplies(user.fbId);
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_REVIEWS':
@@ -545,39 +574,33 @@ function receivedQuickReplyPostback(event) {
         break;
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_12':
           if(user == null)  return;
-          user.timeSlot = "12-2";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "122";
+          saveOrderToDatabse(user.fbId);
         break;        
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_2':
           if(user == null)  return;
-          user.timeSlot = "2-4";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "24";
+          saveOrderToDatabse(user.fbId);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_4':
           if(user == null)  return;
-          user.timeSlot = "4-6";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "46";
+          saveOrderToDatabse(user.fbId);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_6':
           if(user == null)  return;
-          user.timeSlot = "6-8";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "68";
+          saveOrderToDatabse(user.fbId);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_8':
           if(user == null)  return;
-          user.timeSlot = "8-10";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "810";
+          saveOrderToDatabse(user.fbId);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_10':
           if(user == null)  return;
-          user.timeSlot = "10-12";
-          var text = "Thank you, " + user.firstName + " Your booking confirmed";
-          showOrderConfirmationQuickReplies(user.fbId,text);
+          user.timeSlot = "1012";
+          saveOrderToDatabse(user.fbId);
         break;   
         case 'DEVELOPER_DEFINED_PAYLOAD_BOOK_TIME_CANCEL':
           if(user == null)  return;
@@ -851,7 +874,7 @@ var getUserInfo = function (recipientId,callback) {
 };
 
 function saveUserToFirebase(recipientId,firstName,last_name){
-  database.ref('users/'+recipientId).set({
+  userRef.ref(recipientId).set({
     userId : recipientId,
     firstName : firstName,
     lastName : last_name
@@ -1097,7 +1120,6 @@ function showAskContactTemplate(recipientId){
 
   text = "Hello " + user.firstName + ", Please give us your contact number?";
   showContactTemplate(recipientId,text);
-
 }
 
 function showContactTemplate(recipientId,text){
@@ -1123,23 +1145,33 @@ function showTableSelectionQuickReplies(recipientId){
       id: recipientId
     },
     message: {
-      text: "Please select table size?",
+      text: "Please select table size",
       quick_replies: [
         {
           "content_type":"text",
-          "title":"2",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_TWO"      
+          "title":"for 1",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_ONE"      
         },
         {
           "content_type":"text",
-          "title":"3 - 5",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_BETWEEN_FIVE"
+          "title":"for 2",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_TWO"
         },
         {
           "content_type":"text",
-          "title":"More than 5",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_BOOK_MORE_THAN_FIVE"
-        }
+          "title":"for 3",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_THREE"
+        },
+        {
+          "content_type":"text",
+          "title":"for 4",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_FOUR"
+        },
+        {
+          "content_type":"text",
+          "title":"for 5",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_FIVE"
+        },
       ]
     }
   };
@@ -1195,6 +1227,30 @@ function showTimeSlotSelectionQuickReplies(recipientId){
   };
 
   callSendAPI(messageData);
+}
+
+function saveOrderToDatabse(recipientId){
+  var user = UserSession[recipientId];
+  if(user == null)  return;
+
+  var orderDetails = {
+    customerId : user.fbId,
+    customerName : user.firstName,
+    timeSlot : user.timeSlot,
+    tablesize : user.bookingNumber,
+    datetime : firebase.database.ServerValue.TIMESTAMP
+  };
+
+  var newOrderId = ordersReference.push();
+  newOrderId.set(orderDetails,function(error){
+    if(error){
+      console.log("couldn't save to db error " + error);
+    }else{
+      console.log("record saved to db");
+      var text = "Thank you, " + user.firstName + " Your booking confirmed.";
+      showOrderConfirmationQuickReplies(user.fbId,text);
+    }
+  });   
 }
 
 /*
