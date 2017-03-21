@@ -1499,7 +1499,7 @@ function checkIsBookingAvailable(recipientId){
     startTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 01, 59, 50, 1000).getTime();
     endTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 50, 1000).getTime();
   } else{
-    today.setDate(today.getDate() + 1);
+    //today.setDate(today.getDate() + 1);
     startTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 01, 59, 50, 1000).getTime();
     endTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 50, 1000).getTime();
   }
