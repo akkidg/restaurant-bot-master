@@ -1496,10 +1496,10 @@ function checkIsBookingAvailable(recipientId){
   var today = new Date();
 
   if(selectedDay == 0){
-    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 00, 59, 50, 1000).getTime();
+    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 01, 59, 50, 1000).getTime();
     endTimeStamp = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 50, 1000).getTime();
   } else{
-    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + 1), 00, 59, 50, 1000).getTime();
+    startTimeStamp = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + 1), 01, 59, 50, 1000).getTime();
     endTimeStamp = new Date(today.getFullYear(), today.getMonth(), (today.getDate() + 1), 23, 59, 50, 1000).getTime();
   }
 
