@@ -18,7 +18,8 @@ const
   https = require('https'),  
   request = require('request'),
   firebase  = require('firebase'),
-  schedule = require('node-schedule');
+  schedule = require('node-schedule'),
+  Promise = require('promise');
 
   // Firebase Var Initialisation
 
@@ -1506,7 +1507,33 @@ function checkIsBookingAvailable(recipientId){
 
   var currentSlotTableSize = 0;
 
-  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp).once('value',
+  // Write Promise To check if slot full 
+  var orderRef =  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp);
+
+  Promise.all([orderRef.once('value')]).then(function(snapshot){
+    snapshot.forEach(function(childsnapshot){
+        if(user.timeSlot == childsnapshot.val().timeSlot){
+          currentSlotTableSize += childsnapshot.val().tablesize;
+        }
+      });
+       console.log('currentSlotTableSize in foreach' + currentSlotTableSize);
+      return currentSlotTableSize;
+   }).then(function(currentSlotTableSize){
+    console.log('got currentTableSize');
+      if(currentSlotTableSize == maxSlotSize){
+        var text = "Booking for your time slot is full, please select different one"          
+        showTextTemplate(user.fbId,text);
+        setTimeout(function(){
+          showTimeSlotSelectionQuickReplies(user.fbId);
+        },delayMills);
+      } else{
+        showTableSelectionQuickReplies(user.fbId);
+      }
+   }).catch(function(error){
+    console.log('Failed to get currentSlotTableSize values', error);
+   });
+
+  /*ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp).once('value',
     function(snapshot){
       snapshot.forEach(function(childsnapshot){
         if(user.timeSlot == childsnapshot.val().timeSlot){
@@ -1523,7 +1550,7 @@ function checkIsBookingAvailable(recipientId){
           } else{
             showTableSelectionQuickReplies(user.fbId);
           }
-    });
+    });*/
 }
 
 function User(fbId,firstName){
