@@ -1510,8 +1510,8 @@ function checkIsBookingAvailable(recipientId){
   // Write Promise To check if slot full 
   var orderRef =  ordersReference.orderByChild('datetime').startAt(startTimeStamp).endAt(endTimeStamp);
 
-  Promise.all([orderRef.once('value')]).then(function(snapshot[0]){
-    snapshot.forEach(function(childsnapshot){
+  Promise.all([orderRef.once('value')]).then(function(snapshot){
+    snapshot[0].forEach(function(childsnapshot){
         if(user.timeSlot == childsnapshot.val().timeSlot){
           currentSlotTableSize += childsnapshot.val().tablesize;
         }
